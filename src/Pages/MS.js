@@ -191,6 +191,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
             })}
           </select>
           <button
+            style={{ marginBottom: "1rem" }}
             onClick={() => {
               if (
                 addGroupInputRef.current.value !== "default" &&
@@ -349,6 +350,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
           </button>
         </div>
       </div>
+      <div style={{ height: "2rem" }}></div>
     </div>
   );
 }

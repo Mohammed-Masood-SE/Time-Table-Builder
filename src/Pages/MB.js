@@ -63,6 +63,20 @@ function MB({ branches, setBranches }) {
                   onClick={() => {
                     const newBranchState = { ...branches };
                     delete newBranchState[branch];
+                    let keys = Object.keys(newBranchState);
+                    for (let i = 0; i < keys.length; i++) {
+                      let newSubjects = newBranchState[keys[i]].subjects;
+                      for (let j = 0; j < newSubjects.length; j++) {
+                        let newGroupedWith = newSubjects[j].groupedWith.filter(
+                          (item) => item !== branch
+                        );
+                        newSubjects[j].groupedWith = newGroupedWith;
+                        if (newGroupedWith.length === 0) {
+                          newSubjects[j].isGrouped = false;
+                        }
+                      }
+                      newBranchState[keys[i]].subjects = newSubjects;
+                    }
                     localStorage.setItem(
                       "branches",
                       JSON.stringify(newBranchState)
@@ -75,6 +89,7 @@ function MB({ branches, setBranches }) {
           </div>
         </div>
       </div>
+      <div style={{ height: "2rem" }}></div>
     </div>
   );
 }
