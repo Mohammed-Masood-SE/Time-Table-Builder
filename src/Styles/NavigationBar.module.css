@@ -1,0 +1,35 @@
+.container{
+    width: 100vw;
+}
+
+.textStyle{
+    color: #EDEDED;
+}
+
+.row{
+    height: 3rem;
+    display: flex;
+    margin-top: 2rem;
+    justify-content:space-around;
+    
+    margin-left: 1rem;
+    margin-right: 1rem;
+    
+}
+
+.customNavigationButton{
+    outline: none;
+    background-color: white;
+    border: none;
+    border-bottom: 2px solid #c2babf;
+}
+.customNavigationButton:hover{
+    cursor: pointer;
+}
+
+.selectedNav{
+    outline: none;
+    background-color: white;
+    border: none;
+    border-bottom: 2px solid black;
+}

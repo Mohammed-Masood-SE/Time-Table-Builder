@@ -1,0 +1,56 @@
+.container{
+    height: 33rem;
+    background-color: rgb(255, 255, 255);
+    margin-left: 5rem;
+    margin-top: 3rem;
+    margin-right: 5rem;
+    border-radius: 1%;
+    padding: 1rem;
+}
+
+.inputHolder{
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+button{
+    cursor: pointer;
+}
+
+.display{
+    display: flex;
+    justify-content:flex-start;
+    margin-top: 2rem;
+}
+
+.display div{
+    margin-left: 5rem;
+    
+}
+
+.close{
+    height: 1rem;
+}
+.close:hover{
+    cursor: pointer;
+}
+
+.roomHolder{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #c2babf;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.roomHolder:hover{
+    background-color: rgb(227, 228, 229);
+}
+
+.inputs{
+    outline: none;
+    margin-right: 0.5rem;
+}
