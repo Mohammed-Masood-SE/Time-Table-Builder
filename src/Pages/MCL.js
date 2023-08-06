@@ -2,7 +2,14 @@ import styles from "../Styles/MCL.module.css";
 import { useRef } from "react";
 import closeSVG from "../Icons/close.svg";
 import { toast } from "react-toastify";
-function MCL({ setLabs, setClassRooms, labs, classRooms }) {
+function MCL({
+  setLabs,
+  setClassRooms,
+  labs,
+  classRooms,
+  branches,
+  setBranches,
+}) {
   const classroomInputRef = useRef(null);
   const labInputRef = useRef(null);
   const errorToastOptions = {
@@ -63,6 +70,22 @@ function MCL({ setLabs, setClassRooms, labs, classRooms }) {
                       JSON.stringify(updatedRooms)
                     );
                     setClassRooms(updatedRooms);
+                    const newBranchState = { ...branches };
+                    let keys = Object.keys(newBranchState);
+                    for (let i = 0; i < keys.length; i++) {
+                      let newSubjects = newBranchState[keys[i]].subjects;
+                      for (let j = 0; j < newSubjects.length; j++) {
+                        if (newSubjects[j].requiredClass === room) {
+                          newSubjects[j].requiredClass = "Any";
+                        }
+                      }
+                      newBranchState[keys[i]].subjects = newSubjects;
+                    }
+                    setBranches(newBranchState);
+                    localStorage.setItem(
+                      "branches",
+                      JSON.stringify(newBranchState)
+                    );
                   }}
                 />
               </div>
@@ -111,6 +134,22 @@ function MCL({ setLabs, setClassRooms, labs, classRooms }) {
                     const updatedRooms = labs.filter((r) => r !== room);
                     localStorage.setItem("labs", JSON.stringify(updatedRooms));
                     setLabs(updatedRooms);
+                    const newBranchState = { ...branches };
+                    let keys = Object.keys(newBranchState);
+                    for (let i = 0; i < keys.length; i++) {
+                      let newSubjects = newBranchState[keys[i]].subjects;
+                      for (let j = 0; j < newSubjects.length; j++) {
+                        if (newSubjects[j].requiredClass === room) {
+                          newSubjects[j].requiredClass = "Any";
+                        }
+                      }
+                      newBranchState[keys[i]].subjects = newSubjects;
+                    }
+                    setBranches(newBranchState);
+                    localStorage.setItem(
+                      "branches",
+                      JSON.stringify(newBranchState)
+                    );
                   }}
                 />
               </div>

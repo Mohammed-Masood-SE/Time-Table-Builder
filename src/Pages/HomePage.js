@@ -199,6 +199,8 @@ function HomePage() {
           setLabs={setLabs}
           classRooms={classRooms}
           labs={labs}
+          branches={branches}
+          setBranches={setBranches}
         />
       ) : (
         <></>
