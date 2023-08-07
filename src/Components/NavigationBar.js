@@ -1,6 +1,12 @@
 import styles from "../Styles/NavigationBar.module.css";
 import { useState } from "react";
-function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
+function NavigationBar({
+  setDisplayMCL,
+  setDisplayMB,
+  setDisplayMS,
+  setDisplayMF,
+  setDisplayBTT,
+}) {
   const [selectedNav, setSelectedNav] = useState(0);
   return (
     <div className={styles.container}>
@@ -16,6 +22,8 @@ function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
             setDisplayMCL(true);
             setDisplayMB(false);
             setDisplayMS(false);
+            setDisplayMF(false);
+            setDisplayBTT(false);
           }}
         >
           Modify Classrooms & Labs
@@ -31,6 +39,8 @@ function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
             setDisplayMCL(false);
             setDisplayMB(true);
             setDisplayMS(false);
+            setDisplayMF(false);
+            setDisplayBTT(false);
           }}
         >
           Modify Branch
@@ -46,6 +56,8 @@ function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
             setDisplayMCL(false);
             setDisplayMB(false);
             setDisplayMS(true);
+            setDisplayMF(false);
+            setDisplayBTT(false);
           }}
         >
           Modify Subjects
@@ -56,6 +68,14 @@ function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
               ? styles.selectedNav
               : styles.customNavigationButton
           }
+          onClick={() => {
+            setSelectedNav(3);
+            setDisplayMCL(false);
+            setDisplayMB(false);
+            setDisplayMS(false);
+            setDisplayMF(true);
+            setDisplayBTT(false);
+          }}
         >
           Modify Faculty
         </button>
@@ -65,6 +85,14 @@ function NavigationBar({ setDisplayMCL, setDisplayMB, setDisplayMS }) {
               ? styles.selectedNav
               : styles.customNavigationButton
           }
+          onClick={() => {
+            setSelectedNav(4);
+            setDisplayMCL(false);
+            setDisplayMB(false);
+            setDisplayMS(false);
+            setDisplayMF(false);
+            setDisplayBTT(true);
+          }}
         >
           Build Time Tables
         </button>

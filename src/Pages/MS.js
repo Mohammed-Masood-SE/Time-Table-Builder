@@ -12,6 +12,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
   const [isGroupedState, setIsGroupedState] = useState(false);
   const addGroupInputRef = useRef(false);
   const [groupsState, setGroupsState] = useState([]);
+  const [allSubjects, setAllSubjects] = useState([]);
   const errorToastOptions = {
     position: "bottom-right",
     autoClose: 5000,
@@ -22,6 +23,24 @@ function MS({ branches, setBranches, classRooms, labs }) {
     progress: undefined,
     theme: "dark",
   };
+
+  function getEverySubject() {
+    let Keys = Object.keys(branches);
+    let newAllSubjects = [];
+    for (let i = 0; i < Keys.length; i++) {
+      let tempSubjects = branches[Keys[i]].subjects;
+      for (let j = 0; j < tempSubjects.length; j++) {
+        if (!newAllSubjects.includes(tempSubjects[j].subjectName)) {
+          newAllSubjects.push(tempSubjects[j].subjectName);
+        }
+      }
+    }
+    setAllSubjects(newAllSubjects);
+  }
+
+  useEffect(() => {
+    getEverySubject();
+  }, [branches]);
 
   useEffect(() => {
     setGroupsState([]);
@@ -261,6 +280,12 @@ function MS({ branches, setBranches, classRooms, labs }) {
                 toast.error("You Selected Grouped , But Did Not Group Any");
                 return;
               }
+              if (allSubjects.includes(subjectNameInputRef.current.value)) {
+                toast.error(
+                  "Subject With That Name Already Exists In Some Branch , Please Change The Name"
+                );
+                return;
+              }
               let tempSubject = {
                 subjectName: subjectNameInputRef.current.value,
                 totalHours: THPWInputRef.current.value,
@@ -292,6 +317,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
               }
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
+              toast.success("Added Successfully");
             }}
           >
             Add As Subject
@@ -311,6 +337,14 @@ function MS({ branches, setBranches, classRooms, labs }) {
                 groupsState.length === 0
               ) {
                 toast.error("You Selected Grouped , But Did Not Group Any");
+                return;
+              }
+              if (
+                allSubjects.includes(subjectNameInputRef.current.value + " LAB")
+              ) {
+                toast.error(
+                  "Lab With That Name Already Exists In Some Branch , Please Change The Name"
+                );
                 return;
               }
               let tempSubject = {
@@ -344,6 +378,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
               }
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
+              toast.success("Added Successfully");
             }}
           >
             Add As Lab

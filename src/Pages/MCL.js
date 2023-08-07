@@ -41,6 +41,9 @@ function MCL({
                 newArray.push(classroomInputRef.current.value);
                 localStorage.setItem("classRooms", JSON.stringify(newArray));
                 setClassRooms(newArray);
+                toast.success(
+                  `Added Classroom ${classroomInputRef.current.value} Successfully`
+                );
               } else {
                 if (classroomInputRef.current.value) {
                   toast.error(
@@ -70,6 +73,7 @@ function MCL({
                       JSON.stringify(updatedRooms)
                     );
                     setClassRooms(updatedRooms);
+                    toast.success(`Removed Classroom ${room} Successfully`);
                     const newBranchState = { ...branches };
                     let keys = Object.keys(newBranchState);
                     for (let i = 0; i < keys.length; i++) {
@@ -108,6 +112,9 @@ function MCL({
                 newArray.push(labInputRef.current.value);
                 localStorage.setItem("labs", JSON.stringify(newArray));
                 setLabs(newArray);
+                toast.success(
+                  `Added Lab ${labInputRef.current.value} Successfully`
+                );
               } else {
                 if (labInputRef.current.value) {
                   toast.error(
@@ -134,6 +141,7 @@ function MCL({
                     const updatedRooms = labs.filter((r) => r !== room);
                     localStorage.setItem("labs", JSON.stringify(updatedRooms));
                     setLabs(updatedRooms);
+                    toast.success(`Removed Lab ${room} Successfully`);
                     const newBranchState = { ...branches };
                     let keys = Object.keys(newBranchState);
                     for (let i = 0; i < keys.length; i++) {

@@ -41,6 +41,7 @@ function MB({ branches, setBranches }) {
                   JSON.stringify(newBranchState)
                 );
                 setBranches(newBranchState);
+                toast.success(`Added Branch ${newBranchName} Successfully`);
               } else {
                 if (branchInputRef.current.value) {
                   toast.error("Branch Already Exists", errorToastOptions);
@@ -82,6 +83,7 @@ function MB({ branches, setBranches }) {
                       JSON.stringify(newBranchState)
                     );
                     setBranches(newBranchState);
+                    toast.success(`Removed Branch ${branch} Successfully`);
                   }}
                 />
               </div>

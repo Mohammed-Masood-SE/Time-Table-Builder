@@ -6,14 +6,19 @@ import MCL from "./MCL";
 import { useState, useEffect } from "react";
 import MB from "./MB";
 import MS from "./MS";
+import MF from "./MF";
+import BTT from "./BTT";
 function HomePage() {
   const [classRooms, setClassRooms] = useState([]);
   const [labs, setLabs] = useState([]);
-  const [branches, setBranches] = useState([]);
+  const [branches, setBranches] = useState({});
+  const [faculties, setFaculties] = useState({});
 
   const [displayMCL, setDisplayMCL] = useState(true);
   const [displayMB, setDisplayMB] = useState(false);
   const [displayMS, setDisplayMS] = useState(false);
+  const [displayMF, setDisplayMF] = useState(false);
+  const [displayBTT, setDisplayBTT] = useState(false);
 
   useEffect(() => {
     const temp = localStorage.getItem("classRooms");
@@ -30,6 +35,11 @@ function HomePage() {
     const storedBranches = JSON.parse(temp3);
     if (storedBranches) {
       setBranches(storedBranches);
+    }
+    const temp4 = localStorage.getItem("faculties");
+    const storedFaculties = JSON.parse(temp4);
+    if (storedFaculties) {
+      setFaculties(storedFaculties);
     }
   }, []);
 
@@ -72,7 +82,7 @@ function HomePage() {
             requiredClass: "201",
           },
           {
-            subjectName: "Arabic",
+            subjectName: "Arabic 1",
             totalHours: 1,
             isGrouped: true,
             groupedWith: ["B.tech CSE 2"],
@@ -117,7 +127,7 @@ function HomePage() {
             requiredClass: "201",
           },
           {
-            subjectName: "Arabic",
+            subjectName: "Arabic 1",
             totalHours: 1,
             isGrouped: true,
             groupedWith: ["B.tech CSE 1"],
@@ -162,7 +172,7 @@ function HomePage() {
             requiredClass: "201",
           },
           {
-            subjectName: "Arabic",
+            subjectName: "Arabic 2",
             totalHours: 1,
             isGrouped: false,
             groupedWith: [],
@@ -172,12 +182,42 @@ function HomePage() {
         ],
       },
     };
+    let testFaculties = {
+      "Lipsa Maam": {
+        subjects: [
+          "C Programming LAB",
+          "Web Development",
+          "Web Development LAB",
+          "C Programming",
+        ],
+        offDays: ["Monday"],
+      },
+      "Ved Sir": {
+        subjects: [
+          "Java Programming",
+          "Java Programming LAB",
+          "C++ Programming",
+          "C++ Programming LAB",
+        ],
+        offDays: ["Friday"],
+      },
+      "Arabic Maam": {
+        subjects: ["Arabic 1", "Arabic 2"],
+        offDays: ["Friday", "Monday"],
+      },
+      "Vinod Sir": {
+        subjects: ["AI", "ML", "AI LAB", "ML LAB"],
+        offDays: ["Thrusday"],
+      },
+    };
     setClassRooms(testClassrooms);
     setLabs(testLabs);
     setBranches(testBranches);
+    setFaculties(testFaculties);
     localStorage.setItem("classRooms", JSON.stringify(testClassrooms));
     localStorage.setItem("labs", JSON.stringify(testLabs));
     localStorage.setItem("branches", JSON.stringify(testBranches));
+    localStorage.setItem("faculties", JSON.stringify(testFaculties));
   }
 
   return (
@@ -192,6 +232,8 @@ function HomePage() {
         setDisplayMCL={setDisplayMCL}
         setDisplayMB={setDisplayMB}
         setDisplayMS={setDisplayMS}
+        setDisplayMF={setDisplayMF}
+        setDisplayBTT={setDisplayBTT}
       />
       {displayMCL ? (
         <MCL
@@ -216,6 +258,16 @@ function HomePage() {
       ) : (
         <></>
       )}
+      {displayMF ? (
+        <MF
+          branches={branches}
+          faculties={faculties}
+          setFaculties={setFaculties}
+        />
+      ) : (
+        <></>
+      )}
+      {displayBTT ? <BTT branches={branches} faculties={faculties} /> : <></>}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
