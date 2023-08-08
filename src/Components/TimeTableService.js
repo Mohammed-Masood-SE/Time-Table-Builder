@@ -134,7 +134,9 @@ function TimeTableService({
       cell[1]
     );
     if (!isFacultyFree) {
-      toast.error("Faculty For This Class Is Not Free During This Period");
+      toast.error(
+        "Faculty For This Class Is Not Free During This Period Or Has An Off Day"
+      );
       return;
     }
 
@@ -167,7 +169,9 @@ function TimeTableService({
       cell[1]
     );
     if (!isFacultyFree) {
-      toast.error("Faculty For This Lab Is Not Free During This Period");
+      toast.error(
+        "Faculty For This Lab Is Not Free During This Period Or Has An Off Day"
+      );
       return;
     }
     let availableLabsForCell1 = classRoomCollisionManager.getFreeClassRoom(
@@ -234,6 +238,8 @@ function TimeTableService({
       room: room,
       subjectName: selectedSubject,
       facultyName: facName,
+      isLab: false,
+      isGrouped: false,
     });
     setFinalTimeTable(newFinalTimeTable);
     localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
@@ -266,6 +272,7 @@ function TimeTableService({
     );
     setClassRoomsState(newclassRoomsState2);
     localStorage.setItem("classRoomState", JSON.stringify(newclassRoomsState));
+    localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
     setDisplayClassRoomPicker(false);
     let newFinalTimeTable = [...finalTimeTable];
     newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
@@ -273,12 +280,16 @@ function TimeTableService({
       room: room,
       subjectName: selectedSubject,
       facultyName: facName,
+      isLab: true,
+      isGrouped: false,
     });
     newFinalTimeTable[selectedIJ[0]][selectedIJ[1] + 1].push({
       branchName: branchName,
       room: room,
       subjectName: selectedSubject,
       facultyName: "",
+      isLab: true,
+      isGrouped: false,
     });
     setFinalTimeTable(newFinalTimeTable);
     localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
@@ -409,7 +420,29 @@ function TimeTableService({
                 onClick={() => {
                   displayCRP(cell);
                 }}
-              ></td>
+              >
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.subjectName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.facultyName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.room}</label>;
+                    }
+                  })}
+                </div>
+              </td>
             ))}
           </tr>
           <tr>
@@ -419,7 +452,29 @@ function TimeTableService({
                 onClick={() => {
                   displayCRP(cell);
                 }}
-              ></td>
+              >
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.subjectName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.facultyName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.room}</label>;
+                    }
+                  })}
+                </div>
+              </td>
             ))}
           </tr>
           <tr>
@@ -429,7 +484,29 @@ function TimeTableService({
                 onClick={() => {
                   displayCRP(cell);
                 }}
-              ></td>
+              >
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.subjectName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.facultyName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.room}</label>;
+                    }
+                  })}
+                </div>
+              </td>
             ))}
           </tr>
           <tr>
@@ -439,7 +516,29 @@ function TimeTableService({
                 onClick={() => {
                   displayCRP(cell);
                 }}
-              ></td>
+              >
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.subjectName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.facultyName}</label>;
+                    }
+                  })}
+                </div>
+                <div>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.room}</label>;
+                    }
+                  })}
+                </div>
+              </td>
             ))}
           </tr>
         </tbody>
