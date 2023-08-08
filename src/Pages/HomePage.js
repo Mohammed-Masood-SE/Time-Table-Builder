@@ -14,6 +14,14 @@ function HomePage() {
   const [branches, setBranches] = useState({});
   const [faculties, setFaculties] = useState({});
 
+  const [classRoomsState, setClassRoomsState] = useState([
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+  ]);
+  const [facultiesState, setFacultiesState] = useState([]);
   const [finalTimeTable, setFinalTimeTable] = useState([
     [[], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], []],
@@ -53,6 +61,85 @@ function HomePage() {
     const storedFinalTimetable = JSON.parse(temp5);
     if (storedFinalTimetable) {
       setFinalTimeTable(storedFinalTimetable);
+    }
+    const temp6 = localStorage.getItem("classRoomState");
+    const storedClassRoomState = JSON.parse(temp6);
+    if (storedClassRoomState) {
+      setClassRoomsState(storedClassRoomState);
+    }
+    const temp7 = localStorage.getItem("facultiesState");
+    const storedFacultiesState = JSON.parse(temp7);
+    if (storedFacultiesState) {
+      Object.keys(faculties).map((faculty) => {
+        for (let i = 0; i < faculties[faculty].offDays.length; i++) {
+          if (faculties[faculty].offDays[i] === "Monday") {
+            for (let j = 0; j < storedFacultiesState[0].length; j++) {
+              if (!storedFacultiesState[0][j].includes(faculty)) {
+                storedFacultiesState[0][j].push(faculty);
+              }
+            }
+          } else if (faculties[faculty].offDays[i] === "Tuesday") {
+            for (let j = 0; j < storedFacultiesState[1].length; j++) {
+              if (!storedFacultiesState[1][j].includes(faculty)) {
+                storedFacultiesState[1][j].push(faculty);
+              }
+            }
+          } else if (faculties[faculty].offDays[i] === "Wednesday") {
+            for (let j = 0; j < storedFacultiesState[2].length; j++) {
+              if (!storedFacultiesState[0][j].includes(faculty)) {
+                storedFacultiesState[2][j].push(faculty);
+              }
+            }
+          } else if (faculties[faculty].offDays[i] === "Thrusday") {
+            for (let j = 0; j < storedFacultiesState[3].length; j++) {
+              if (!storedFacultiesState[0][j].includes(faculty)) {
+                storedFacultiesState[3][j].push(faculty);
+              }
+            }
+          } else if (faculties[faculty].offDays[i] === "Friday") {
+            for (let j = 0; j < storedFacultiesState[4].length; j++) {
+              if (!storedFacultiesState[0][j].includes(faculty)) {
+                storedFacultiesState[4][j].push(faculty);
+              }
+            }
+          }
+        }
+      });
+      setFacultiesState(storedFacultiesState);
+    } else {
+      let arr = [
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+      ];
+      Object.keys(faculties).map((faculty) => {
+        for (let i = 0; i < faculties[faculty].offDays.length; i++) {
+          if (faculties[faculty].offDays[i] === "Monday") {
+            for (let j = 0; j < arr[0].length; j++) {
+              arr[0][j].push(faculty);
+            }
+          } else if (faculties[faculty].offDays[i] === "Tuesday") {
+            for (let j = 0; j < arr[1].length; j++) {
+              arr[1][j].push(faculty);
+            }
+          } else if (faculties[faculty].offDays[i] === "Wednesday") {
+            for (let j = 0; j < arr[2].length; j++) {
+              arr[2][j].push(faculty);
+            }
+          } else if (faculties[faculty].offDays[i] === "Thrusday") {
+            for (let j = 0; j < arr[3].length; j++) {
+              arr[3][j].push(faculty);
+            }
+          } else if (faculties[faculty].offDays[i] === "Friday") {
+            for (let j = 0; j < arr[4].length; j++) {
+              arr[4][j].push(faculty);
+            }
+          }
+        }
+      });
+      setFacultiesState(arr);
     }
   }, []);
 
@@ -227,6 +314,60 @@ function HomePage() {
     setLabs(testLabs);
     setBranches(testBranches);
     setFaculties(testFaculties);
+
+    setClassRoomsState([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+
+    let arr = [
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ];
+    Object.keys(faculties).map((faculty) => {
+      for (let i = 0; i < faculties[faculty].offDays.length; i++) {
+        if (faculties[faculty].offDays[i] === "Monday") {
+          for (let j = 0; j < arr[0].length; j++) {
+            arr[0][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Tuesday") {
+          for (let j = 0; j < arr[1].length; j++) {
+            arr[1][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Wednesday") {
+          for (let j = 0; j < arr[2].length; j++) {
+            arr[2][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Thrusday") {
+          for (let j = 0; j < arr[3].length; j++) {
+            arr[3][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Friday") {
+          for (let j = 0; j < arr[4].length; j++) {
+            arr[4][j].push(faculty);
+          }
+        }
+      }
+    });
+    setFacultiesState(arr);
+
+    setFinalTimeTable([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+
+    localStorage.removeItem("classRoomState");
+    localStorage.removeItem("facultiesState");
+    localStorage.removeItem("finalTimeTable");
     localStorage.setItem("classRooms", JSON.stringify(testClassrooms));
     localStorage.setItem("labs", JSON.stringify(testLabs));
     localStorage.setItem("branches", JSON.stringify(testBranches));
@@ -276,6 +417,11 @@ function HomePage() {
           branches={branches}
           faculties={faculties}
           setFaculties={setFaculties}
+          classRoomsState={classRoomsState}
+          setClassRoomsState={setClassRoomsState}
+          facultiesState={facultiesState}
+          setFacultiesState={setFacultiesState}
+          setFinalTimeTable={setFinalTimeTable}
         />
       ) : (
         <></>
@@ -288,6 +434,10 @@ function HomePage() {
           labs={labs}
           setFinalTimeTable={setFinalTimeTable}
           finalTimeTable={finalTimeTable}
+          classRoomsState={classRoomsState}
+          setClassRoomsState={setClassRoomsState}
+          facultiesState={facultiesState}
+          setFacultiesState={setFacultiesState}
         />
       ) : (
         <></>

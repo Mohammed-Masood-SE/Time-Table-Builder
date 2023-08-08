@@ -273,6 +273,7 @@ function TimeTableService({
     setClassRoomsState(newclassRoomsState2);
     localStorage.setItem("classRoomState", JSON.stringify(newclassRoomsState));
     localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+    setFacultiesState(newFacultiesState);
     setDisplayClassRoomPicker(false);
     let newFinalTimeTable = [...finalTimeTable];
     newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
@@ -338,6 +339,48 @@ function TimeTableService({
     setUsedSubjectCounter(finalUpdatedUsedSubjects);
   }
 
+  function deleteFromTable(cell) {
+    let cellData = false;
+    // Get All The Data In The Cell Before Deleting
+    for (let i = 0; i < finalTimeTable[cell[0]][cell[1]].length; i++) {
+      if (finalTimeTable[cell[0]][cell[1]][i].branchName === branchName) {
+        cellData = finalTimeTable[cell[0]][cell[1]][i];
+      }
+    }
+    if (!cellData) {
+      toast.error("Cannot Delete An Empty Cell");
+      return;
+    }
+    if (!cellData.isLab) {
+      let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
+        classRoomsState,
+        cellData.room,
+        cell[0],
+        cell[1]
+      );
+      setClassRoomsState(newclassRoomsState);
+      localStorage.setItem(
+        "classRoomState",
+        JSON.stringify(newclassRoomsState)
+      );
+      let newFacultiesState = facultyCollisionManager.freeUpFaculty(
+        facultiesState,
+        cellData.facultyName,
+        cell[0],
+        cell[1]
+      );
+      setFacultiesState(newFacultiesState);
+      localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+      let newFinalTimeTable = [...finalTimeTable];
+      newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
+        cell[1]
+      ].filter((x) => x.branchName !== branchName);
+      setFinalTimeTable(newFinalTimeTable);
+      localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
+      updateUsedSubjectCounter();
+    }
+  }
+
   useEffect(() => {
     updateUsedSubjectCounter();
   }, [branches]);
@@ -392,7 +435,19 @@ function TimeTableService({
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
                     if (innerObject.branchName === branchName) {
-                      return <label>{innerObject.subjectName}</label>;
+                      return (
+                        <div>
+                          <img
+                            src={closeSVG}
+                            className={styles.smallerclose}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteFromTable(cell);
+                            }}
+                          />{" "}
+                          <label>{innerObject.subjectName}</label>
+                        </div>
+                      );
                     }
                   })}
                 </div>
@@ -424,7 +479,19 @@ function TimeTableService({
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
                     if (innerObject.branchName === branchName) {
-                      return <label>{innerObject.subjectName}</label>;
+                      return (
+                        <div>
+                          <img
+                            src={closeSVG}
+                            className={styles.smallerclose}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteFromTable(cell);
+                            }}
+                          />{" "}
+                          <label>{innerObject.subjectName}</label>
+                        </div>
+                      );
                     }
                   })}
                 </div>
@@ -456,7 +523,19 @@ function TimeTableService({
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
                     if (innerObject.branchName === branchName) {
-                      return <label>{innerObject.subjectName}</label>;
+                      return (
+                        <div>
+                          <img
+                            src={closeSVG}
+                            className={styles.smallerclose}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteFromTable(cell);
+                            }}
+                          />{" "}
+                          <label>{innerObject.subjectName}</label>
+                        </div>
+                      );
                     }
                   })}
                 </div>
@@ -488,7 +567,19 @@ function TimeTableService({
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
                     if (innerObject.branchName === branchName) {
-                      return <label>{innerObject.subjectName}</label>;
+                      return (
+                        <div>
+                          <img
+                            src={closeSVG}
+                            className={styles.smallerclose}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteFromTable(cell);
+                            }}
+                          />{" "}
+                          <label>{innerObject.subjectName}</label>
+                        </div>
+                      );
                     }
                   })}
                 </div>
@@ -520,7 +611,19 @@ function TimeTableService({
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
                     if (innerObject.branchName === branchName) {
-                      return <label>{innerObject.subjectName}</label>;
+                      return (
+                        <div>
+                          <img
+                            src={closeSVG}
+                            className={styles.smallerclose}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteFromTable(cell);
+                            }}
+                          />{" "}
+                          <label>{innerObject.subjectName}</label>
+                        </div>
+                      );
                     }
                   })}
                 </div>

@@ -3,7 +3,16 @@ import { useRef, useState, useEffect } from "react";
 import closeSVG from "../Icons/close.svg";
 import { toast } from "react-toastify";
 
-function MF({ branches, setFaculties, faculties }) {
+function MF({
+  branches,
+  setFaculties,
+  faculties,
+  classRoomsState,
+  setClassRoomsState,
+  facultiesState,
+  setFacultiesState,
+  setFinalTimeTable,
+}) {
   const facultyNameInputRef = useRef(null);
   const selectedFaculty = useRef(null);
   const selectedOffDay = useRef(null);
@@ -115,6 +124,24 @@ function MF({ branches, setFaculties, faculties }) {
     delete newFaculties[selectedFacultyState];
     setFaculties(newFaculties);
     localStorage.setItem("faculties", JSON.stringify(newFaculties));
+    localStorage.removeItem("classRoomState");
+    setClassRoomsState([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+    setFacultiesState([]);
+    localStorage.removeItem("facultiesState");
+    setFinalTimeTable([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+    localStorage.removeItem("finalTimeTable");
     toast.success(`Deleted ${selectedFacultyState} From System`);
   }
 

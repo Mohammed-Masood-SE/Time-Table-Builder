@@ -25,6 +25,12 @@ class ClassRoomCollisionManager {
     newState[i][j].push(roomNumber);
     return newState;
   }
+
+  freeUpClassRoom(state, roomNumber, i, j) {
+    let newState = [...state];
+    newState[i][j] = newState[i][j].filter((x) => x !== roomNumber);
+    return newState;
+  }
 }
 
 export default ClassRoomCollisionManager;

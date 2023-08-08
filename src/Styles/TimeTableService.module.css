@@ -10,10 +10,10 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    
 }
 th, td {
     border: 1px solid #ccc;
-    padding: 8px;
     text-align: center;
     width: 100px;
     white-space: nowrap; 
@@ -26,6 +26,10 @@ th {
 
 td:hover {
     cursor: pointer;
+}
+td{
+    position: relative;
+    z-index: 0;
 }
 
 .classRoomPickerContainer{
@@ -69,4 +73,16 @@ td:hover {
 
 .isGrouped{
     background-color: rgb(196, 244, 248);
+}
+
+.smallerclose{
+    height: 0.8rem;
+   position: absolute; 
+   right: 5px;
+   top: 5px; 
+   z-index: 1;
+}
+
+.smallerclose:hover{
+    cursor: pointer;
 }
