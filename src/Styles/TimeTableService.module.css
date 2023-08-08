@@ -1,0 +1,68 @@
+.container{
+    padding: 1rem;
+    margin-bottom: 1rem ;
+}
+
+.alignTextCenter{
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+td:hover{
+    cursor: pointer;
+}
+
+.classRoomPickerContainer{
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 1rem;
+    bottom: 3rem;
+    top:3rem;
+    left: 5rem;
+    right: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+}
+
+.classRoomPickerContainer button{
+    padding: 0.3rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-bottom: 1rem;
+}
+
+.close{
+    height: 2rem;
+    position: absolute;
+    right: 1rem;
+    top:1rem;
+}
+.close:hover{
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+
+.isLab{
+    background-color: rgb(247, 248, 196);
+}
+
+.isGrouped{
+    background-color: rgb(196, 244, 248);
+}

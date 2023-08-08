@@ -2,9 +2,24 @@ import styles from "../Styles/BTT.module.css";
 import { useRef, useState, useEffect } from "react";
 import closeSVG from "../Icons/close.svg";
 import { toast } from "react-toastify";
+import TimeTableService from "../Components/TimeTableService";
 
-function BTT({ branches, faculties }) {
+function BTT({
+  branches,
+  faculties,
+  classRooms,
+  labs,
+  setFinalTimeTable,
+  finalTimeTable,
+}) {
   const [allSubjectsPicked, setAllSubjectsPicked] = useState([]);
+  const [classRoomsState, setClassRoomsState] = useState([
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+  ]);
 
   function removedAlreadyPickedSubjects(oldAllSubjects) {
     let Keys = Object.keys(faculties);
@@ -35,13 +50,35 @@ function BTT({ branches, faculties }) {
   }
 
   useEffect(() => {
+    const temp = localStorage.getItem("classRoomState");
+    const storedClassRoomState = JSON.parse(temp);
+    if (storedClassRoomState) {
+      setClassRoomsState(storedClassRoomState);
+    }
+  }, []);
+
+  useEffect(() => {
     getEverySubject();
   }, [branches, faculties]);
 
   return (
     <div className={styles.container}>
       {allSubjectsPicked.length === 0 ? (
-        <div></div>
+        <div>
+          {Object.keys(branches).map((branch) => (
+            <TimeTableService
+              key={branch}
+              branchName={branch}
+              classRoomsState={classRoomsState}
+              setClassRoomsState={setClassRoomsState}
+              classRooms={classRooms}
+              labs={labs}
+              setFinalTimeTable={setFinalTimeTable}
+              finalTimeTable={finalTimeTable}
+              branches={branches}
+            />
+          ))}
+        </div>
       ) : (
         <div>
           <div>

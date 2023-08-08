@@ -14,6 +14,14 @@ function HomePage() {
   const [branches, setBranches] = useState({});
   const [faculties, setFaculties] = useState({});
 
+  const [finalTimeTable, setFinalTimeTable] = useState([
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+    [[], [], [], [], [], [], [], []],
+  ]);
+
   const [displayMCL, setDisplayMCL] = useState(true);
   const [displayMB, setDisplayMB] = useState(false);
   const [displayMS, setDisplayMS] = useState(false);
@@ -40,6 +48,11 @@ function HomePage() {
     const storedFaculties = JSON.parse(temp4);
     if (storedFaculties) {
       setFaculties(storedFaculties);
+    }
+    const temp5 = localStorage.getItem("finalTimeTable");
+    const storedFinalTimetable = JSON.parse(temp5);
+    if (storedFinalTimetable) {
+      setFinalTimeTable(storedFinalTimetable);
     }
   }, []);
 
@@ -267,7 +280,18 @@ function HomePage() {
       ) : (
         <></>
       )}
-      {displayBTT ? <BTT branches={branches} faculties={faculties} /> : <></>}
+      {displayBTT ? (
+        <BTT
+          branches={branches}
+          faculties={faculties}
+          classRooms={classRooms}
+          labs={labs}
+          setFinalTimeTable={setFinalTimeTable}
+          finalTimeTable={finalTimeTable}
+        />
+      ) : (
+        <></>
+      )}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
