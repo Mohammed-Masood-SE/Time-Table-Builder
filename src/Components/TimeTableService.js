@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import closeSVG from "../Icons/close.svg";
 import ClassRoomCollisionManager from "../Managers/ClassRoomCollisionManager";
+import FacultyCollisionManager from "../Managers/FacultyCollisionManager";
 function TimeTableService({
   branchName,
   classRoomsState,
@@ -12,8 +13,12 @@ function TimeTableService({
   setFinalTimeTable,
   finalTimeTable,
   branches,
+  setFacultiesState,
+  facultiesState,
+  faculties,
 }) {
   let classRoomCollisionManager = new ClassRoomCollisionManager();
+  let facultyCollisionManager = new FacultyCollisionManager();
   const [tableFillers, setTableFillers] = useState([
     [
       [0, 0],
@@ -71,7 +76,35 @@ function TimeTableService({
   const [selectedIJ, setSelectedIJ] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(false);
   const [usedSubjectCounter, setUsedSubjectCounter] = useState({});
+
+  function checkIfIsLab() {
+    for (let i = 0; i < branches[branchName].subjects.length; i++) {
+      if (branches[branchName].subjects[i].subjectName === selectedSubject) {
+        return branches[branchName].subjects[i].isLab;
+      }
+    }
+  }
+
+  function getRequiredClass() {
+    for (let i = 0; i < branches[branchName].subjects.length; i++) {
+      if (branches[branchName].subjects[i].subjectName === selectedSubject) {
+        return branches[branchName].subjects[i].requiredClass;
+      }
+    }
+  }
+
+  function getFacultyNameBySubjectName() {
+    let facName = "";
+    Object.keys(faculties).map((faculty) => {
+      if (faculties[faculty].subjects.includes(selectedSubject)) {
+        facName = faculty;
+      }
+    });
+    return facName;
+  }
+
   function displayCRP(cell) {
+    // this for loop checks if a time table already has a class at that given time
     for (let i = 0; i < finalTimeTable[cell[0]][cell[1]].length; i++) {
       if (finalTimeTable[cell[0]][cell[1]][i].branchName === branchName) {
         return;
@@ -81,130 +114,185 @@ function TimeTableService({
       toast.error("Please Select A Subject To Place In The Cell");
       return;
     }
-    let requiredClass = 0;
-    let isLab = false;
-    for (let i = 0; i < branches[branchName].subjects.length; i++) {
-      if (branches[branchName].subjects[i].subjectName === selectedSubject) {
-        requiredClass = branches[branchName].subjects[i].requiredClass;
-        isLab = branches[branchName].subjects[i].isLab;
-      }
-    }
+
+    let requiredClass = getRequiredClass();
+    let isLab = checkIfIsLab();
+
     if (!isLab) {
-      let availableClassesForCell = classRoomCollisionManager.getFreeClassRoom(
-        classRoomsState,
-        classRooms,
-        cell[0],
-        cell[1],
-        requiredClass
-      );
+      normalClassHandler(cell, requiredClass);
+    } else {
+      labHandler(cell, requiredClass);
+    }
+  }
+
+  function normalClassHandler(cell, requiredClass) {
+    let facName = getFacultyNameBySubjectName();
+    let isFacultyFree = facultyCollisionManager.checkIfFacultyFree(
+      facultiesState,
+      facName,
+      cell[0],
+      cell[1]
+    );
+    if (!isFacultyFree) {
+      toast.error("Faculty For This Class Is Not Free During This Period");
+      return;
+    }
+
+    let availableClassesForCell = classRoomCollisionManager.getFreeClassRoom(
+      classRoomsState,
+      classRooms,
+      cell[0],
+      cell[1],
+      requiredClass
+    );
+    if (availableClassesForCell.length !== 0) {
       setSelectedIJ(cell);
       setAvailableClassRooms(availableClassesForCell);
       setDisplayClassRoomPicker(true);
     } else {
-      if (cell[1] === 7) {
-        toast.error("Cannot Add A Lab In The Last Period");
-        return;
-      }
-      let availableLabsForCell1 = classRoomCollisionManager.getFreeClassRoom(
-        classRoomsState,
-        labs,
-        cell[0],
-        cell[1],
-        requiredClass
-      );
-      if (availableLabsForCell1.length !== 0) {
-        let availableLabsForCell2 = classRoomCollisionManager.getFreeClassRoom(
-          classRoomsState,
-          labs,
-          cell[0],
-          cell[1] + 1,
-          requiredClass
-        );
-        if (availableLabsForCell2.length !== 0) {
-          setSelectedIJ(cell);
-          const commonArray = availableLabsForCell1.filter((item) =>
-            availableLabsForCell2.includes(item)
-          );
-          setAvailableClassRooms(commonArray);
-          setDisplayClassRoomPicker(true);
-        } else {
-          toast.error(
-            `Lab ${requiredClass} Is Taken During The Following Period`
-          );
-        }
-      } else {
-        toast.error(`Lab ${requiredClass} Is Taken During This Time`);
-      }
+      toast.error("No Class Rooms Free At This Time!");
     }
   }
 
-  function bookRoom(room) {
-    let isLab = false;
-    for (let i = 0; i < branches[branchName].subjects.length; i++) {
-      if (
-        branches[branchName].subjects[i].subjectName === selectedSubject &&
-        branches[branchName].subjects[i].isLab
-      ) {
-        isLab = true;
-      }
+  function labHandler(cell, requiredClass) {
+    if (cell[1] === 7) {
+      toast.error("Cannot Add A Lab In The Last Period");
+      return;
     }
-    if (!isLab) {
-      let newclassRoomsState = classRoomCollisionManager.bookClassRoom(
+    let facName = getFacultyNameBySubjectName();
+    let isFacultyFree = facultyCollisionManager.checkIfFacultyFree(
+      facultiesState,
+      facName,
+      cell[0],
+      cell[1]
+    );
+    if (!isFacultyFree) {
+      toast.error("Faculty For This Lab Is Not Free During This Period");
+      return;
+    }
+    let availableLabsForCell1 = classRoomCollisionManager.getFreeClassRoom(
+      classRoomsState,
+      labs,
+      cell[0],
+      cell[1],
+      requiredClass
+    );
+    if (availableLabsForCell1.length !== 0) {
+      // check if the next period is free too since lab requires 2 free periods back to back
+      let availableLabsForCell2 = classRoomCollisionManager.getFreeClassRoom(
         classRoomsState,
-        room,
-        selectedIJ[0],
-        selectedIJ[1]
+        labs,
+        cell[0],
+        cell[1] + 1,
+        requiredClass
       );
-      setClassRoomsState(newclassRoomsState);
-      localStorage.setItem(
-        "classRoomState",
-        JSON.stringify(newclassRoomsState)
-      );
-      setDisplayClassRoomPicker(false);
-      let newFinalTimeTable = [...finalTimeTable];
-      newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
-        branchName: branchName,
-        room: room,
-        subjectName: selectedSubject,
-      });
-      setFinalTimeTable(newFinalTimeTable);
-      localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
-      setSelectedSubject(false);
-      updateUsedSubjectCounter();
+      if (availableLabsForCell2.length !== 0) {
+        setSelectedIJ(cell);
+        // take the common free required lab , since that means that lab is free for both periods
+        const commonArray = availableLabsForCell1.filter((item) =>
+          availableLabsForCell2.includes(item)
+        );
+        setAvailableClassRooms(commonArray);
+        setDisplayClassRoomPicker(true);
+      } else {
+        toast.error(
+          `Lab ${requiredClass} Is Already Reserved The Following Period`
+        );
+      }
     } else {
-      let newclassRoomsState = classRoomCollisionManager.bookClassRoom(
-        classRoomsState,
-        room,
-        selectedIJ[0],
-        selectedIJ[1]
-      );
-      let newclassRoomsState2 = classRoomCollisionManager.bookClassRoom(
-        classRoomsState,
-        room,
-        selectedIJ[0],
-        selectedIJ[1] + 1
-      );
-      setClassRoomsState(newclassRoomsState2);
-      localStorage.setItem(
-        "classRoomState",
-        JSON.stringify(newclassRoomsState)
-      );
-      setDisplayClassRoomPicker(false);
-      let newFinalTimeTable = [...finalTimeTable];
-      newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
-        branchName: branchName,
-        room: room,
-        subjectName: selectedSubject,
-      });
-      newFinalTimeTable[selectedIJ[0]][selectedIJ[1] + 1].push({
-        branchName: branchName,
-        room: room,
-        subjectName: selectedSubject,
-      });
-      setFinalTimeTable(newFinalTimeTable);
-      localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
-      setSelectedSubject(false);
-      updateUsedSubjectCounter();
+      toast.error(`Lab ${requiredClass} Is Already Reserved`);
+    }
+  }
+
+  function bookNormalClass(room) {
+    //Book Room
+    let newclassRoomsState = classRoomCollisionManager.bookClassRoom(
+      classRoomsState,
+      room,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+
+    //Book Faculty
+    let facName = getFacultyNameBySubjectName();
+    let newFacultiesState = facultyCollisionManager.bookFaculty(
+      facultiesState,
+      facName,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+
+    setFacultiesState(newFacultiesState);
+    setClassRoomsState(newclassRoomsState);
+    localStorage.setItem("classRoomState", JSON.stringify(newclassRoomsState));
+    localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+    setDisplayClassRoomPicker(false);
+
+    let newFinalTimeTable = [...finalTimeTable];
+    newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
+      branchName: branchName,
+      room: room,
+      subjectName: selectedSubject,
+      facultyName: facName,
+    });
+    setFinalTimeTable(newFinalTimeTable);
+    localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
+    setSelectedSubject(false);
+    updateUsedSubjectCounter();
+  }
+
+  function bookLab(room) {
+    //Book First Period
+    let newclassRoomsState = classRoomCollisionManager.bookClassRoom(
+      classRoomsState,
+      room,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+    //Book Second Period
+    let newclassRoomsState2 = classRoomCollisionManager.bookClassRoom(
+      classRoomsState,
+      room,
+      selectedIJ[0],
+      selectedIJ[1] + 1
+    );
+    //Book Faculty For Only The First Period
+    let facName = getFacultyNameBySubjectName();
+    let newFacultiesState = facultyCollisionManager.bookFaculty(
+      facultiesState,
+      facName,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+    setClassRoomsState(newclassRoomsState2);
+    localStorage.setItem("classRoomState", JSON.stringify(newclassRoomsState));
+    setDisplayClassRoomPicker(false);
+    let newFinalTimeTable = [...finalTimeTable];
+    newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
+      branchName: branchName,
+      room: room,
+      subjectName: selectedSubject,
+      facultyName: facName,
+    });
+    newFinalTimeTable[selectedIJ[0]][selectedIJ[1] + 1].push({
+      branchName: branchName,
+      room: room,
+      subjectName: selectedSubject,
+      facultyName: "",
+    });
+    setFinalTimeTable(newFinalTimeTable);
+    localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
+    setSelectedSubject(false);
+    updateUsedSubjectCounter();
+  }
+
+  function bookRoom(room) {
+    let isLab = checkIfIsLab();
+
+    if (!isLab) {
+      bookNormalClass(room);
+    } else {
+      bookLab(room);
     }
   }
 
@@ -298,7 +386,11 @@ function TimeTableService({
                   })}
                 </div>
                 <div>
-                  <label>Faculty Name</label>
+                  {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
+                    if (innerObject.branchName === branchName) {
+                      return <label>{innerObject.facultyName}</label>;
+                    }
+                  })}
                 </div>
                 <div>
                   {finalTimeTable[cell[0]][cell[1]].map((innerObject) => {
