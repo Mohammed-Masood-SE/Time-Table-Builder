@@ -339,6 +339,15 @@ function TimeTableService({
     setUsedSubjectCounter(finalUpdatedUsedSubjects);
   }
 
+  function checkIfNextPeriodIsTheSameLab(cellData) {
+    if (cellData.facultyName === "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //CLEAN THIS FUNCTION UP
   function deleteFromTable(cell) {
     let cellData = false;
     // Get All The Data In The Cell Before Deleting
@@ -378,6 +387,101 @@ function TimeTableService({
       setFinalTimeTable(newFinalTimeTable);
       localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
       updateUsedSubjectCounter();
+    } else {
+      let isNext = checkIfNextPeriodIsTheSameLab(cellData);
+      if (isNext) {
+        let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
+          classRoomsState,
+          cellData.room,
+          cell[0],
+          cell[1]
+        );
+        let newclassRoomsState2 = classRoomCollisionManager.freeUpClassRoom(
+          classRoomsState,
+          cellData.room,
+          cell[0],
+          cell[1] + 1
+        );
+        setClassRoomsState(newclassRoomsState2);
+        localStorage.setItem(
+          "classRoomState",
+          JSON.stringify(newclassRoomsState)
+        );
+        let newFacultiesState = facultyCollisionManager.freeUpFaculty(
+          facultiesState,
+          cellData.facultyName,
+          cell[0],
+          cell[1]
+        );
+        setFacultiesState(newFacultiesState);
+        localStorage.setItem(
+          "facultiesState",
+          JSON.stringify(newFacultiesState)
+        );
+        let newFinalTimeTable = [...finalTimeTable];
+        newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
+          cell[1]
+        ].filter((x) => x.branchName !== branchName);
+        newFinalTimeTable[cell[0]][cell[1] + 1] = newFinalTimeTable[cell[0]][
+          cell[1]
+        ].filter((x) => x.branchName !== branchName);
+        setFinalTimeTable(newFinalTimeTable);
+        localStorage.setItem(
+          "finalTimeTable",
+          JSON.stringify(newFinalTimeTable)
+        );
+        updateUsedSubjectCounter();
+      } else {
+        let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
+          classRoomsState,
+          cellData.room,
+          cell[0],
+          cell[1]
+        );
+        let newclassRoomsState2 = classRoomCollisionManager.freeUpClassRoom(
+          classRoomsState,
+          cellData.room,
+          cell[0],
+          cell[1] - 1
+        );
+        setClassRoomsState(newclassRoomsState2);
+        localStorage.setItem(
+          "classRoomState",
+          JSON.stringify(newclassRoomsState)
+        );
+        let prevCellData = false;
+        for (let i = 0; i < finalTimeTable[cell[0]][cell[1]].length; i++) {
+          if (finalTimeTable[cell[0]][cell[1]][i].branchName === branchName) {
+            prevCellData = finalTimeTable[cell[0]][cell[1] - 1][i];
+          }
+        }
+
+        let newFacultiesState = facultyCollisionManager.freeUpFaculty(
+          facultiesState,
+          prevCellData.facultyName,
+          cell[0],
+          cell[1] - 1
+        );
+
+        setFacultiesState(newFacultiesState);
+        localStorage.setItem(
+          "facultiesState",
+          JSON.stringify(newFacultiesState)
+        );
+        let newFinalTimeTable = [...finalTimeTable];
+        newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
+          cell[1]
+        ].filter((x) => x.branchName !== branchName);
+        newFinalTimeTable[cell[0]][cell[1] - 1] = newFinalTimeTable[cell[0]][
+          cell[1]
+        ].filter((x) => x.branchName !== branchName);
+        setFinalTimeTable(newFinalTimeTable);
+        localStorage.setItem(
+          "finalTimeTable",
+          JSON.stringify(newFinalTimeTable)
+        );
+        updateUsedSubjectCounter();
+      }
     }
   }
 

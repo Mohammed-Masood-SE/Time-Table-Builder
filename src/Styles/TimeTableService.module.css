@@ -29,7 +29,7 @@ td:hover {
 }
 td{
     position: relative;
-    z-index: 0;
+ 
 }
 
 .classRoomPickerContainer{
@@ -44,6 +44,7 @@ td{
     flex-direction: column;
     align-items: center;
     border: 2px solid black;
+    z-index: 1;
 }
 
 .classRoomPickerContainer button{
@@ -80,7 +81,7 @@ td{
    position: absolute; 
    right: 5px;
    top: 5px; 
-   z-index: 1;
+
 }
 
 .smallerclose:hover{
