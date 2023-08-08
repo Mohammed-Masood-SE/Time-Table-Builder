@@ -37,36 +37,6 @@ function HomePage() {
   const [displayBTT, setDisplayBTT] = useState(false);
 
   useEffect(() => {
-    const temp = localStorage.getItem("classRooms");
-    const storedClassRooms = JSON.parse(temp);
-    if (storedClassRooms) {
-      setClassRooms(storedClassRooms);
-    }
-    const temp2 = localStorage.getItem("labs");
-    const storedLabs = JSON.parse(temp2);
-    if (storedLabs) {
-      setLabs(storedLabs);
-    }
-    const temp3 = localStorage.getItem("branches");
-    const storedBranches = JSON.parse(temp3);
-    if (storedBranches) {
-      setBranches(storedBranches);
-    }
-    const temp4 = localStorage.getItem("faculties");
-    const storedFaculties = JSON.parse(temp4);
-    if (storedFaculties) {
-      setFaculties(storedFaculties);
-    }
-    const temp5 = localStorage.getItem("finalTimeTable");
-    const storedFinalTimetable = JSON.parse(temp5);
-    if (storedFinalTimetable) {
-      setFinalTimeTable(storedFinalTimetable);
-    }
-    const temp6 = localStorage.getItem("classRoomState");
-    const storedClassRoomState = JSON.parse(temp6);
-    if (storedClassRoomState) {
-      setClassRoomsState(storedClassRoomState);
-    }
     const temp7 = localStorage.getItem("facultiesState");
     const storedFacultiesState = JSON.parse(temp7);
     if (storedFacultiesState) {
@@ -140,6 +110,60 @@ function HomePage() {
         }
       });
       setFacultiesState(arr);
+      localStorage.setItem("facultiesState", JSON.stringify(arr));
+    }
+  }, [faculties]);
+
+  useEffect(() => {
+    const temp = localStorage.getItem("classRooms");
+    const storedClassRooms = JSON.parse(temp);
+    if (storedClassRooms) {
+      setClassRooms(storedClassRooms);
+    }
+    const temp2 = localStorage.getItem("labs");
+    const storedLabs = JSON.parse(temp2);
+    if (storedLabs) {
+      setLabs(storedLabs);
+    }
+    const temp3 = localStorage.getItem("branches");
+    const storedBranches = JSON.parse(temp3);
+    if (storedBranches) {
+      setBranches(storedBranches);
+    }
+    const temp4 = localStorage.getItem("faculties");
+    const storedFaculties = JSON.parse(temp4);
+    if (storedFaculties) {
+      setFaculties(storedFaculties);
+    }
+    const temp5 = localStorage.getItem("finalTimeTable");
+    const storedFinalTimetable = JSON.parse(temp5);
+    if (storedFinalTimetable) {
+      setFinalTimeTable(storedFinalTimetable);
+    } else {
+      let ftt = [
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+      ];
+      setFinalTimeTable(ftt);
+      localStorage.setItem("finalTimeTable", JSON.stringify(ftt));
+    }
+    const temp6 = localStorage.getItem("classRoomState");
+    const storedClassRoomState = JSON.parse(temp6);
+    if (storedClassRoomState) {
+      setClassRoomsState(storedClassRoomState);
+    } else {
+      let CRS = [
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], []],
+      ];
+      setClassRoomsState(CRS);
+      localStorage.setItem("classRoomState", JSON.stringify(CRS));
     }
   }, []);
 
@@ -314,7 +338,9 @@ function HomePage() {
     setLabs(testLabs);
     setBranches(testBranches);
     setFaculties(testFaculties);
-
+    localStorage.removeItem("classRoomState");
+    localStorage.removeItem("facultiesState");
+    localStorage.removeItem("finalTimeTable");
     setClassRoomsState([
       [[], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], []],
@@ -364,10 +390,16 @@ function HomePage() {
       [[], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], []],
     ]);
-
-    localStorage.removeItem("classRoomState");
-    localStorage.removeItem("facultiesState");
-    localStorage.removeItem("finalTimeTable");
+    let temp = [
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ];
+    localStorage.setItem("facultiesState", JSON.stringify(arr));
+    localStorage.setItem("finalTimeTable", JSON.stringify(temp));
+    localStorage.setItem("classRoomState", JSON.stringify(temp));
     localStorage.setItem("classRooms", JSON.stringify(testClassrooms));
     localStorage.setItem("labs", JSON.stringify(testLabs));
     localStorage.setItem("branches", JSON.stringify(testBranches));

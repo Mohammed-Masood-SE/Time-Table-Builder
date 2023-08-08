@@ -84,6 +84,13 @@ function TimeTableService({
       }
     }
   }
+  function checkIfIsGrouped() {
+    for (let i = 0; i < branches[branchName].subjects.length; i++) {
+      if (branches[branchName].subjects[i].subjectName === selectedSubject) {
+        return branches[branchName].subjects[i].isGrouped;
+      }
+    }
+  }
 
   function getRequiredClass() {
     for (let i = 0; i < branches[branchName].subjects.length; i++) {
@@ -91,6 +98,33 @@ function TimeTableService({
         return branches[branchName].subjects[i].requiredClass;
       }
     }
+  }
+  function isGroupedBranchesFree(cell) {
+    let groups = branches[branchName].subjects.filter(
+      (sub) => sub.subjectName === selectedSubject
+    );
+    let groupedWith = groups[0].groupedWith;
+
+    //Check If Every Branch Is Free
+    let isEveryBranchFree = true;
+    for (let i = 0; i < groupedWith.length; i++) {
+      let reply = finalTimeTable[cell[0]][cell[1]].filter(
+        (item) => item.branchName === groupedWith[i]
+      );
+      if (reply.length > 0) {
+        isEveryBranchFree = false;
+      }
+    }
+
+    return isEveryBranchFree;
+  }
+
+  function getGroupedWithClasses(selectedSubjectx) {
+    let groups = branches[branchName].subjects.filter(
+      (sub) => sub.subjectName === selectedSubjectx
+    );
+    let groupedWith = groups[0].groupedWith;
+    return groupedWith;
   }
 
   function getFacultyNameBySubjectName() {
@@ -117,9 +151,13 @@ function TimeTableService({
 
     let requiredClass = getRequiredClass();
     let isLab = checkIfIsLab();
-
+    let isGrouped = checkIfIsGrouped();
     if (!isLab) {
-      normalClassHandler(cell, requiredClass);
+      if (isGrouped) {
+        groupedClassHandler(cell, requiredClass);
+      } else {
+        normalClassHandler(cell, requiredClass);
+      }
     } else {
       labHandler(cell, requiredClass);
     }
@@ -140,6 +178,46 @@ function TimeTableService({
       return;
     }
 
+    let availableClassesForCell = classRoomCollisionManager.getFreeClassRoom(
+      classRoomsState,
+      classRooms,
+      cell[0],
+      cell[1],
+      requiredClass
+    );
+    if (availableClassesForCell.length !== 0) {
+      setSelectedIJ(cell);
+      setAvailableClassRooms(availableClassesForCell);
+      setDisplayClassRoomPicker(true);
+    } else {
+      toast.error("No Class Rooms Free At This Time!");
+    }
+  }
+
+  function groupedClassHandler(cell, requiredClass) {
+    //Check If Every Batch Is Free At That Time
+    let allBatchesFree = isGroupedBranchesFree(cell);
+    console.log(allBatchesFree);
+    if (!allBatchesFree) {
+      toast.error(
+        "Not Every Batch Grouped With This Subject Is Free During This Time"
+      );
+      return;
+    }
+    //Check If Faculty Is Free
+    let facName = getFacultyNameBySubjectName();
+    let isFacultyFree = facultyCollisionManager.checkIfFacultyFree(
+      facultiesState,
+      facName,
+      cell[0],
+      cell[1]
+    );
+    if (!isFacultyFree) {
+      toast.error(
+        "Faculty For This Class Is Not Free During This Period Or Has An Off Day"
+      );
+      return;
+    }
     let availableClassesForCell = classRoomCollisionManager.getFreeClassRoom(
       classRoomsState,
       classRooms,
@@ -246,6 +324,54 @@ function TimeTableService({
     setSelectedSubject(false);
     updateUsedSubjectCounter();
   }
+  function bookGroupedClass(room) {
+    //Book Room
+    let newclassRoomsState = classRoomCollisionManager.bookClassRoom(
+      classRoomsState,
+      room,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+
+    //Book Faculty
+    let facName = getFacultyNameBySubjectName();
+    let newFacultiesState = facultyCollisionManager.bookFaculty(
+      facultiesState,
+      facName,
+      selectedIJ[0],
+      selectedIJ[1]
+    );
+
+    setFacultiesState(newFacultiesState);
+    setClassRoomsState(newclassRoomsState);
+    localStorage.setItem("classRoomState", JSON.stringify(newclassRoomsState));
+    localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+    setDisplayClassRoomPicker(false);
+    let groupedWith = getGroupedWithClasses(selectedSubject);
+    let newFinalTimeTable = [...finalTimeTable];
+    newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
+      branchName: branchName,
+      room: room,
+      subjectName: selectedSubject,
+      facultyName: facName,
+      isLab: false,
+      isGrouped: true,
+    });
+    for (let i = 0; i < groupedWith.length; i++) {
+      newFinalTimeTable[selectedIJ[0]][selectedIJ[1]].push({
+        branchName: groupedWith[i],
+        room: room,
+        subjectName: selectedSubject,
+        facultyName: facName,
+        isLab: false,
+        isGrouped: true,
+      });
+    }
+    setFinalTimeTable(newFinalTimeTable);
+    localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
+    setSelectedSubject(false);
+    updateUsedSubjectCounter();
+  }
 
   function bookLab(room) {
     //Book First Period
@@ -300,9 +426,13 @@ function TimeTableService({
 
   function bookRoom(room) {
     let isLab = checkIfIsLab();
-
+    let isGrouped = checkIfIsGrouped();
     if (!isLab) {
-      bookNormalClass(room);
+      if (isGrouped) {
+        bookGroupedClass(room);
+      } else {
+        bookNormalClass(room);
+      }
     } else {
       bookLab(room);
     }
@@ -329,12 +459,27 @@ function TimeTableService({
         branches[branchName].subjects[i].subjectName
       );
 
-      finalUpdatedUsedSubjects[temp.subjectName] = {
-        counter: temp.counter,
-        totalHours: branches[branchName].subjects[i].totalHours,
-        isLab: branches[branchName].subjects[i].isLab,
-        isGrouped: branches[branchName].subjects[i].isGrouped,
-      };
+      if (branches[branchName].subjects[i].isGrouped) {
+        finalUpdatedUsedSubjects[temp.subjectName] = {
+          counter:
+            temp.counter -
+            branches[branchName].subjects[i].totalHours *
+              branches[branchName].subjects[i].groupedWith.length,
+          totalHours: branches[branchName].subjects[i].totalHours,
+          isLab: branches[branchName].subjects[i].isLab,
+          isGrouped: branches[branchName].subjects[i].isGrouped,
+        };
+      } else {
+        finalUpdatedUsedSubjects[temp.subjectName] = {
+          counter:
+            temp.counter > branches[branchName].subjects[i].totalHours
+              ? branches[branchName].subjects[i].totalHours
+              : temp.counter,
+          totalHours: branches[branchName].subjects[i].totalHours,
+          isLab: branches[branchName].subjects[i].isLab,
+          isGrouped: branches[branchName].subjects[i].isGrouped,
+        };
+      }
     }
     setUsedSubjectCounter(finalUpdatedUsedSubjects);
   }
@@ -360,7 +505,9 @@ function TimeTableService({
       toast.error("Cannot Delete An Empty Cell");
       return;
     }
-    if (!cellData.isLab) {
+    if (cellData.isGrouped) {
+      console.log(cellData.subjectName);
+      // free the classRoom
       let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
         classRoomsState,
         cellData.room,
@@ -372,6 +519,7 @@ function TimeTableService({
         "classRoomState",
         JSON.stringify(newclassRoomsState)
       );
+      //Free the Faculty
       let newFacultiesState = facultyCollisionManager.freeUpFaculty(
         facultiesState,
         cellData.facultyName,
@@ -380,6 +528,45 @@ function TimeTableService({
       );
       setFacultiesState(newFacultiesState);
       localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+      //Remove From Time Table
+      let newFinalTimeTable = [...finalTimeTable];
+      newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
+        cell[1]
+      ].filter((x) => x.branchName !== branchName);
+      let groups = getGroupedWithClasses(cellData.subjectName);
+      for (let i = 0; i < groups.length; i++) {
+        newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
+          cell[1]
+        ].filter((x) => x.branchName !== groups[i]);
+      }
+      setFinalTimeTable(newFinalTimeTable);
+      localStorage.setItem("finalTimeTable", JSON.stringify(newFinalTimeTable));
+      updateUsedSubjectCounter();
+      return;
+    }
+    if (!cellData.isLab) {
+      // free the classRoom
+      let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
+        classRoomsState,
+        cellData.room,
+        cell[0],
+        cell[1]
+      );
+      setClassRoomsState(newclassRoomsState);
+      localStorage.setItem(
+        "classRoomState",
+        JSON.stringify(newclassRoomsState)
+      );
+      //Free The Faculty
+      let newFacultiesState = facultyCollisionManager.freeUpFaculty(
+        facultiesState,
+        cellData.facultyName,
+        cell[0],
+        cell[1]
+      );
+      setFacultiesState(newFacultiesState);
+      localStorage.setItem("facultiesState", JSON.stringify(newFacultiesState));
+      //Remove From Time Table
       let newFinalTimeTable = [...finalTimeTable];
       newFinalTimeTable[cell[0]][cell[1]] = newFinalTimeTable[cell[0]][
         cell[1]
@@ -487,7 +674,7 @@ function TimeTableService({
 
   useEffect(() => {
     updateUsedSubjectCounter();
-  }, [branches]);
+  }, [branches, finalTimeTable]);
 
   return (
     <div key={branchName} className={styles.container}>
@@ -510,7 +697,12 @@ function TimeTableService({
           }}
         >
           {sub} x{" "}
-          {usedSubjectCounter[sub].totalHours - usedSubjectCounter[sub].counter}
+          {usedSubjectCounter[sub].isGrouped
+            ? (usedSubjectCounter[sub].totalHours -
+                usedSubjectCounter[sub].counter) /
+              2
+            : usedSubjectCounter[sub].totalHours -
+              usedSubjectCounter[sub].counter}
         </button>
       ))}
       <table>
