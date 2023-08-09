@@ -554,7 +554,13 @@ function HomePage() {
         <></>
       )}
       {displayVTT ? (
-        <VTT finalTimeTable={finalTimeTable} branches={branches} />
+        <VTT
+          finalTimeTable={finalTimeTable}
+          branches={branches}
+          faculties={faculties}
+          classRooms={classRooms}
+          labs={labs}
+        />
       ) : (
         <></>
       )}

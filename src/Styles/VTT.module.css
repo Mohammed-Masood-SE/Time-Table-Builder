@@ -36,12 +36,11 @@ td:hover {
 td {
     position: relative;
     width: 1px; 
-    vertical-align: top; 
     height: 70px; 
 }
 
-.footer{
-    font-size: small;
+.room{
+    font-weight: bold;
 }
 
 
@@ -52,4 +51,12 @@ td {
 
 .isGrouped{
     background-color: rgb(209, 248, 246);
+}
+
+.available{
+    background-color: rgb(210, 248, 209);
+}
+
+.booked{
+    background-color: rgb(248, 216, 209);
 }
