@@ -553,7 +553,11 @@ function HomePage() {
       ) : (
         <></>
       )}
-      {displayVTT ? <VTT finalTimeTable={finalTimeTable} /> : <></>}
+      {displayVTT ? (
+        <VTT finalTimeTable={finalTimeTable} branches={branches} />
+      ) : (
+        <></>
+      )}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

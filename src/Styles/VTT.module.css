@@ -1,4 +1,55 @@
 .container{
+    height: 33rem;
+    background-color: rgb(255, 255, 255);
+    margin-left: 5rem;
+    margin-top: 3rem;
+    margin-right: 5rem;
+    border-radius: 1%;
     padding: 1rem;
     margin-bottom: 1rem ;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    text-align: center;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding: 8px; 
+    box-sizing: border-box;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+td {
+    position: relative;
+    width: 1px; 
+    vertical-align: top; 
+    height: 70px; 
+}
+
+.footer{
+    font-size: small;
+}
+
+
+
+.isLab{
+    background-color: rgb(248, 248, 209);
+}
+
+.isGrouped{
+    background-color: rgb(209, 248, 246);
 }
