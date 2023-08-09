@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Time-Table-Builder/static/css/main.24fbac4e.css",
+    "main.js": "/Time-Table-Builder/static/js/main.a8b26815.js",
+    "static/media/close.svg": "/Time-Table-Builder/static/media/close.4d3a75c9e9fd854564a48e871d51c80c.svg",
+    "index.html": "/Time-Table-Builder/index.html",
+    "main.24fbac4e.css.map": "/Time-Table-Builder/static/css/main.24fbac4e.css.map",
+    "main.a8b26815.js.map": "/Time-Table-Builder/static/js/main.a8b26815.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.24fbac4e.css",
+    "static/js/main.a8b26815.js"
+  ]
+}
