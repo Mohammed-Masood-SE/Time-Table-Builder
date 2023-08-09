@@ -8,6 +8,7 @@ import MB from "./MB";
 import MS from "./MS";
 import MF from "./MF";
 import BTT from "./BTT";
+import VTT from "./VTT";
 function HomePage() {
   const [classRooms, setClassRooms] = useState([]);
   const [labs, setLabs] = useState([]);
@@ -35,6 +36,7 @@ function HomePage() {
   const [displayMS, setDisplayMS] = useState(false);
   const [displayMF, setDisplayMF] = useState(false);
   const [displayBTT, setDisplayBTT] = useState(false);
+  const [displayVTT, setDisplayVTT] = useState(false);
 
   useEffect(() => {
     const temp7 = localStorage.getItem("facultiesState");
@@ -485,6 +487,7 @@ function HomePage() {
         setDisplayMS={setDisplayMS}
         setDisplayMF={setDisplayMF}
         setDisplayBTT={setDisplayBTT}
+        setDisplayVTT={setDisplayVTT}
       />
       {displayMCL ? (
         <MCL
@@ -550,6 +553,7 @@ function HomePage() {
       ) : (
         <></>
       )}
+      {displayVTT ? <VTT finalTimeTable={finalTimeTable} /> : <></>}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

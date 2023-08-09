@@ -6,6 +6,7 @@ function NavigationBar({
   setDisplayMS,
   setDisplayMF,
   setDisplayBTT,
+  setDisplayVTT,
 }) {
   const [selectedNav, setSelectedNav] = useState(0);
   return (
@@ -24,6 +25,7 @@ function NavigationBar({
             setDisplayMS(false);
             setDisplayMF(false);
             setDisplayBTT(false);
+            setDisplayVTT(false);
           }}
         >
           Modify Classrooms & Labs
@@ -41,6 +43,7 @@ function NavigationBar({
             setDisplayMS(false);
             setDisplayMF(false);
             setDisplayBTT(false);
+            setDisplayVTT(false);
           }}
         >
           Modify Branch
@@ -58,6 +61,7 @@ function NavigationBar({
             setDisplayMS(true);
             setDisplayMF(false);
             setDisplayBTT(false);
+            setDisplayVTT(false);
           }}
         >
           Modify Subjects
@@ -75,6 +79,7 @@ function NavigationBar({
             setDisplayMS(false);
             setDisplayMF(true);
             setDisplayBTT(false);
+            setDisplayVTT(false);
           }}
         >
           Modify Faculty
@@ -92,6 +97,7 @@ function NavigationBar({
             setDisplayMS(false);
             setDisplayMF(false);
             setDisplayBTT(true);
+            setDisplayVTT(false);
           }}
         >
           Build Time Tables
@@ -102,6 +108,15 @@ function NavigationBar({
               ? styles.selectedNav
               : styles.customNavigationButton
           }
+          onClick={() => {
+            setSelectedNav(5);
+            setDisplayMCL(false);
+            setDisplayMB(false);
+            setDisplayMS(false);
+            setDisplayMF(false);
+            setDisplayBTT(false);
+            setDisplayVTT(true);
+          }}
         >
           View Timeables
         </button>
