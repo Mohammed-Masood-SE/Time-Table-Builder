@@ -2,7 +2,7 @@ import styles from "../Styles/MB.module.css";
 import { useRef } from "react";
 import closeSVG from "../Icons/close.svg";
 import { toast } from "react-toastify";
-function MB({ branches, setBranches }) {
+function MB({ branches, setBranches, resetData }) {
   const branchInputRef = useRef(null);
   const errorToastOptions = {
     position: "bottom-right",
@@ -41,6 +41,7 @@ function MB({ branches, setBranches }) {
                   JSON.stringify(newBranchState)
                 );
                 setBranches(newBranchState);
+                resetData();
                 toast.success(`Added Branch ${newBranchName} Successfully`);
               } else {
                 if (branchInputRef.current.value) {
@@ -83,6 +84,7 @@ function MB({ branches, setBranches }) {
                       JSON.stringify(newBranchState)
                     );
                     setBranches(newBranchState);
+                    resetData();
                     toast.success(`Removed Branch ${branch} Successfully`);
                   }}
                 />

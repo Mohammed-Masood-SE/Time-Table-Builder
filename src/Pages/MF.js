@@ -12,6 +12,7 @@ function MF({
   facultiesState,
   setFacultiesState,
   setFinalTimeTable,
+  resetData,
 }) {
   const facultyNameInputRef = useRef(null);
   const selectedFaculty = useRef(null);
@@ -38,6 +39,7 @@ function MF({
     localStorage.setItem("faculties", JSON.stringify(newFacultiesState));
     setFaculties(newFacultiesState);
     toast.success("Faculty Created");
+    resetData();
   }
 
   const handleFacultyChange = () => {
@@ -65,6 +67,7 @@ function MF({
     toast.success(
       `Added ${selectedValue} Successfully to ${selectedFacultyState}`
     );
+    resetData();
   };
 
   const addSubject = () => {
@@ -88,6 +91,7 @@ function MF({
     toast.success(
       `Added ${selectedValue} Successfully to ${selectedFacultyState}`
     );
+    resetData();
     selectedSubject.current.value = "default";
   };
 
@@ -143,6 +147,7 @@ function MF({
     ]);
     localStorage.removeItem("finalTimeTable");
     toast.success(`Deleted ${selectedFacultyState} From System`);
+    resetData();
   }
 
   function removedAlreadyPickedSubjects(oldAllSubjects) {

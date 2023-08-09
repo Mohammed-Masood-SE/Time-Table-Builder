@@ -471,10 +471,6 @@ function HomePage() {
     localStorage.setItem("classRoomState", JSON.stringify(temp));
   }
 
-  useEffect(() => {
-    resetData();
-  }, [classRooms, labs, branches, faculties]);
-
   return (
     <div className={styles.background}>
       <button
@@ -498,17 +494,27 @@ function HomePage() {
           labs={labs}
           branches={branches}
           setBranches={setBranches}
+          resetData={resetData}
         />
       ) : (
         <></>
       )}
-      {displayMB ? <MB branches={branches} setBranches={setBranches} /> : <></>}
+      {displayMB ? (
+        <MB
+          branches={branches}
+          setBranches={setBranches}
+          resetData={resetData}
+        />
+      ) : (
+        <></>
+      )}
       {displayMS ? (
         <MS
           branches={branches}
           setBranches={setBranches}
           classRooms={classRooms}
           labs={labs}
+          resetData={resetData}
         />
       ) : (
         <></>
@@ -523,6 +529,7 @@ function HomePage() {
           facultiesState={facultiesState}
           setFacultiesState={setFacultiesState}
           setFinalTimeTable={setFinalTimeTable}
+          resetData={resetData}
         />
       ) : (
         <></>

@@ -2,7 +2,7 @@ import styles from "../Styles/MS.module.css";
 import { useRef, useState, useEffect } from "react";
 import closeSVG from "../Icons/close.svg";
 import { toast } from "react-toastify";
-function MS({ branches, setBranches, classRooms, labs }) {
+function MS({ branches, setBranches, classRooms, labs, resetData }) {
   const selectedBranch = useRef(null);
   const [selectedBranchState, setSelectedBranchState] = useState(false);
   const subjectNameInputRef = useRef(false);
@@ -121,6 +121,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
                         toast.success(
                           `Removed ${subject.subjectName} For ${selectedBranchState}`
                         );
+                        resetData();
                         //REMOVE IF CLASS IS GROUPED FOR EVERY GROUPED CLASS
                         if (subject.isGrouped) {
                           for (let i = 0; i < subject.groupedWith.length; i++) {
@@ -322,6 +323,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
               toast.success("Added Successfully");
+              resetData();
             }}
           >
             Add As Subject
@@ -387,6 +389,7 @@ function MS({ branches, setBranches, classRooms, labs }) {
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
               toast.success("Added Successfully");
+              resetData();
             }}
           >
             Add As Lab
