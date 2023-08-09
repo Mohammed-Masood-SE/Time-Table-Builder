@@ -290,7 +290,9 @@ function MS({ branches, setBranches, classRooms, labs }) {
                 subjectName: subjectNameInputRef.current.value,
                 totalHours: THPWInputRef.current.value,
                 isGrouped: isGroupedInputRef.current.checked,
-                groupedWith: groupsState,
+                groupedWith: isGroupedInputRef.current.checked
+                  ? groupsState
+                  : [],
                 isLab: false,
                 requiredClass: requiredRoomInputRef.current.value,
               };
@@ -298,22 +300,24 @@ function MS({ branches, setBranches, classRooms, labs }) {
               let newSubjects = [...newBranch[selectedBranchState].subjects];
               newSubjects.push(tempSubject);
               newBranch[selectedBranchState].subjects = newSubjects;
-              for (let i = 0; i < groupsState.length; i++) {
-                let newGroupsState = groupsState.filter(
-                  (item) => item !== groupsState[i]
-                );
-                newGroupsState.push(selectedBranchState);
-                let tempSubject2 = {
-                  subjectName: subjectNameInputRef.current.value,
-                  totalHours: THPWInputRef.current.value,
-                  isGrouped: isGroupedInputRef.current.checked,
-                  groupedWith: newGroupsState,
-                  isLab: false,
-                  requiredClass: requiredRoomInputRef.current.value,
-                };
-                let newSubjects2 = [...newBranch[groupsState[i]].subjects];
-                newSubjects2.push(tempSubject2);
-                newBranch[groupsState[i]].subjects = newSubjects2;
+              if (isGroupedInputRef.current.checked) {
+                for (let i = 0; i < groupsState.length; i++) {
+                  let newGroupsState = groupsState.filter(
+                    (item) => item !== groupsState[i]
+                  );
+                  newGroupsState.push(selectedBranchState);
+                  let tempSubject2 = {
+                    subjectName: subjectNameInputRef.current.value,
+                    totalHours: THPWInputRef.current.value,
+                    isGrouped: isGroupedInputRef.current.checked,
+                    groupedWith: newGroupsState,
+                    isLab: false,
+                    requiredClass: requiredRoomInputRef.current.value,
+                  };
+                  let newSubjects2 = [...newBranch[groupsState[i]].subjects];
+                  newSubjects2.push(tempSubject2);
+                  newBranch[groupsState[i]].subjects = newSubjects2;
+                }
               }
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
@@ -332,11 +336,8 @@ function MS({ branches, setBranches, classRooms, labs }) {
                 toast.error("Please Enter Total Hours Per Week");
                 return;
               }
-              if (
-                isGroupedInputRef.current.checked &&
-                groupsState.length === 0
-              ) {
-                toast.error("You Selected Grouped , But Did Not Group Any");
+              if (isGroupedInputRef.current.checked) {
+                toast.error("Grouping Labs Is Not Allowed");
                 return;
               }
               if (
@@ -347,11 +348,17 @@ function MS({ branches, setBranches, classRooms, labs }) {
                 );
                 return;
               }
+              if (THPWInputRef.current.value % 2 !== 0) {
+                toast.error(
+                  "Our System Only Allows Even Total Hours For The Lab"
+                );
+                return;
+              }
               let tempSubject = {
                 subjectName: subjectNameInputRef.current.value + " LAB",
                 totalHours: THPWInputRef.current.value,
-                isGrouped: isGroupedInputRef.current.checked,
-                groupedWith: groupsState,
+                isGrouped: false,
+                groupedWith: [],
                 isLab: true,
                 requiredClass: requiredRoomInputRef.current.value,
               };
@@ -359,23 +366,24 @@ function MS({ branches, setBranches, classRooms, labs }) {
               let newSubjects = [...newBranch[selectedBranchState].subjects];
               newSubjects.push(tempSubject);
               newBranch[selectedBranchState].subjects = newSubjects;
-              for (let i = 0; i < groupsState.length; i++) {
-                let newGroupsState = groupsState.filter(
-                  (item) => item !== groupsState[i]
-                );
-                newGroupsState.push(selectedBranchState);
-                let tempSubject2 = {
-                  subjectName: subjectNameInputRef.current.value + " LAB",
-                  totalHours: THPWInputRef.current.value,
-                  isGrouped: isGroupedInputRef.current.checked,
-                  groupedWith: newGroupsState,
-                  isLab: true,
-                  requiredClass: requiredRoomInputRef.current.value,
-                };
-                let newSubjects2 = [...newBranch[groupsState[i]].subjects];
-                newSubjects2.push(tempSubject2);
-                newBranch[groupsState[i]].subjects = newSubjects2;
-              }
+              // for grouped Lab (Not Implementing)
+              // for (let i = 0; i < groupsState.length; i++) {
+              //   let newGroupsState = groupsState.filter(
+              //     (item) => item !== groupsState[i]
+              //   );
+              //   newGroupsState.push(selectedBranchState);
+              //   let tempSubject2 = {
+              //     subjectName: subjectNameInputRef.current.value + " LAB",
+              //     totalHours: THPWInputRef.current.value,
+              //     isGrouped: isGroupedInputRef.current.checked,
+              //     groupedWith: newGroupsState,
+              //     isLab: true,
+              //     requiredClass: requiredRoomInputRef.current.value,
+              //   };
+              //   let newSubjects2 = [...newBranch[groupsState[i]].subjects];
+              //   newSubjects2.push(tempSubject2);
+              //   newBranch[groupsState[i]].subjects = newSubjects2;
+              // }
               setBranches(newBranch);
               localStorage.setItem("branches", JSON.stringify(newBranch));
               toast.success("Added Successfully");

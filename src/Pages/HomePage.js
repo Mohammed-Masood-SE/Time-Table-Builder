@@ -406,6 +406,75 @@ function HomePage() {
     localStorage.setItem("faculties", JSON.stringify(testFaculties));
   }
 
+  function resetData() {
+    localStorage.removeItem("classRoomState");
+    localStorage.removeItem("facultiesState");
+    localStorage.removeItem("finalTimeTable");
+    setClassRoomsState([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+
+    let arr = [
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ];
+    Object.keys(faculties).map((faculty) => {
+      for (let i = 0; i < faculties[faculty].offDays.length; i++) {
+        if (faculties[faculty].offDays[i] === "Monday") {
+          for (let j = 0; j < arr[0].length; j++) {
+            arr[0][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Tuesday") {
+          for (let j = 0; j < arr[1].length; j++) {
+            arr[1][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Wednesday") {
+          for (let j = 0; j < arr[2].length; j++) {
+            arr[2][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Thrusday") {
+          for (let j = 0; j < arr[3].length; j++) {
+            arr[3][j].push(faculty);
+          }
+        } else if (faculties[faculty].offDays[i] === "Friday") {
+          for (let j = 0; j < arr[4].length; j++) {
+            arr[4][j].push(faculty);
+          }
+        }
+      }
+    });
+    setFacultiesState(arr);
+
+    setFinalTimeTable([
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ]);
+    let temp = [
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+    ];
+    localStorage.setItem("facultiesState", JSON.stringify(arr));
+    localStorage.setItem("finalTimeTable", JSON.stringify(temp));
+    localStorage.setItem("classRoomState", JSON.stringify(temp));
+  }
+
+  useEffect(() => {
+    resetData();
+  }, [classRooms, labs, branches, faculties]);
+
   return (
     <div className={styles.background}>
       <button
