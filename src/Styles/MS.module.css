@@ -1,6 +1,5 @@
 .container{
     height: 33rem;
-    background-color: rgb(255, 255, 255);
     margin-left: 5rem;
     margin-top: 3rem;
     margin-right: 5rem;
@@ -10,75 +9,127 @@
 
 .subjectAdder{
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    padding-left: 8rem;
 }
-.subjectAdder input{
-    margin-bottom: 1rem;
+.subjectAdderHeading{
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 900;
+    color: white;
 }
 
-.subjectAdder button{
+
+.addAsSubject{
     margin-right: 1rem;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    
+}
+
+.addAsLab{
+    background-color: #b2a656;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    
 }
 
 .primaryInputs{
     margin-right: 1rem;
+    padding: 0.5rem;
+    outline: none;
 }
 
 .tableDisplay{
     width: 80%;
-            margin: 30px auto;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-collapse: separate;
-  border-spacing: 0;
+    margin: 30px auto;
+    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.tableDisplay th:first-child {
-    border-top-left-radius: 10px; 
-    
-  }
-  
-.tableDisplay th:last-child {
-    border-top-right-radius: 10px; 
-    
-  }
 
+
+.tableDisplay tr:last-child td{
+    border-bottom: 1px solid white;
+}
 .tableDisplay th,td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #e4e4d8;
-    
-}
-
-
-
-.normalClass{
-    background-color: #f2f2f2;
-}
-
-.normalClass:hover {
-    background-color: #e0e0e0;
-}
-
-.lab{
-    background-color: #eef0d1;
-}
-
-.lab:hover {
-    background-color: #d2d4b7;
-}
-
-.groupedClass{
-    background-color: #d1f0ed;
-}
-
-.groupedClass:hover {
-    background-color: #b7d0d4;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
 }
 
 .tableDisplay th {
-    background-color: #d3d2d2;
+    background-color: #00000000;
+    color: white;
+    border: none;
+    border-top: 1px solid white;
 }
+
+.tableDisplay td{
+    border:none
+}
+.tableDisplay tr:hover td{
+    border: 1px solid rgb(0, 0, 0);
+   
+}
+
+.normalClass{
+    background-color: #f2f2f200;
+    color: white;
+}
+
+.normalClass:hover {
+    background-color: #e0e0e0b7;
+    color: black;
+}
+
+.lab{
+    background-color: #eef0d100;
+    color: white;
+}
+
+.lab:hover {
+    background-color: #dfe2b8a9;
+    color: black;
+}
+
+.groupedClass{
+    background-color: #d1f0ed00;
+    color: white;
+}
+
+.groupedClass:hover {
+    background-color: #9dcdd488;
+    color: black;
+
+}
+
+
 
 
 .close{
@@ -95,6 +146,7 @@
 .block{
     display: block;
 }
+
 
 .tableGroupDisplay{
     width: 30%;
@@ -131,4 +183,49 @@ margin-bottom: 2rem;
 .tableGroupDisplay tr:hover {
     background-color: rgb(229, 231, 231);
     
+}
+
+.whiteLable{
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    color: white;
+    margin-right: 1rem;
+}
+
+.selectBranchInputContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropDown{
+    padding: 0.3rem;
+    outline: none;
+    border-radius: 8px;
+    background-color: white ;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+
+}
+
+.groupedLable{
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    color: white;
+    margin-left: 1rem;
+}
+
+.isGroupedInputContainer{
+    margin-top: 1rem;
+}
+
+.requiredRoomInputContainer{
+    margin-top: 1rem;
 }

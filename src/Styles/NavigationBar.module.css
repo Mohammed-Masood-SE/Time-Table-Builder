@@ -4,6 +4,10 @@
 
 .textStyle{
     color: #EDEDED;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
 }
 
 .row{
@@ -19,9 +23,14 @@
 
 .customNavigationButton{
     outline: none;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     border: none;
-    border-bottom: 2px solid #c2babf;
+    color: #FFFFFF;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.20);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
 }
 .customNavigationButton:hover{
     cursor: pointer;
@@ -29,7 +38,12 @@
 
 .selectedNav{
     outline: none;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     border: none;
-    border-bottom: 2px solid black;
+    color: #D7E9B1;
+    border-bottom: 2px solid #FFFFFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
 }

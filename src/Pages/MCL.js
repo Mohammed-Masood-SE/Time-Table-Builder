@@ -33,6 +33,7 @@ function MCL({
             ref={classroomInputRef}
           ></input>
           <button
+            className={styles.addButton}
             onClick={() => {
               if (
                 classroomInputRef.current.value &&
@@ -61,42 +62,43 @@ function MCL({
             +
           </button>
           <div>
-            <h3>Available Classrooms</h3>
-            {classRooms.map((room) => (
-              <div key={room} className={styles.roomHolder}>
-                <p>{room}</p>
-                <img
-                  src={closeSVG}
-                  className={styles.close}
-                  onClick={() => {
-                    const updatedRooms = classRooms.filter((r) => r !== room);
-                    localStorage.setItem(
-                      "classRooms",
-                      JSON.stringify(updatedRooms)
-                    );
-                    setClassRooms(updatedRooms);
-                    toast.success(`Removed Classroom ${room} Successfully`);
-                    resetData();
-                    const newBranchState = { ...branches };
-                    let keys = Object.keys(newBranchState);
-                    for (let i = 0; i < keys.length; i++) {
-                      let newSubjects = newBranchState[keys[i]].subjects;
-                      for (let j = 0; j < newSubjects.length; j++) {
-                        if (newSubjects[j].requiredClass === room) {
-                          newSubjects[j].requiredClass = "Any";
+            <div className={styles.roomContainer}>
+              {classRooms.map((room) => (
+                <div key={room} className={styles.roomHolder}>
+                  <p className={styles.roomNumber}>{room}</p>
+                  <img
+                    src={closeSVG}
+                    className={styles.close}
+                    onClick={() => {
+                      const updatedRooms = classRooms.filter((r) => r !== room);
+                      localStorage.setItem(
+                        "classRooms",
+                        JSON.stringify(updatedRooms)
+                      );
+                      setClassRooms(updatedRooms);
+                      toast.success(`Removed Classroom ${room} Successfully`);
+                      resetData();
+                      const newBranchState = { ...branches };
+                      let keys = Object.keys(newBranchState);
+                      for (let i = 0; i < keys.length; i++) {
+                        let newSubjects = newBranchState[keys[i]].subjects;
+                        for (let j = 0; j < newSubjects.length; j++) {
+                          if (newSubjects[j].requiredClass === room) {
+                            newSubjects[j].requiredClass = "Any";
+                          }
                         }
+                        newBranchState[keys[i]].subjects = newSubjects;
                       }
-                      newBranchState[keys[i]].subjects = newSubjects;
-                    }
-                    setBranches(newBranchState);
-                    localStorage.setItem(
-                      "branches",
-                      JSON.stringify(newBranchState)
-                    );
-                  }}
-                />
-              </div>
-            ))}
+                      setBranches(newBranchState);
+                      localStorage.setItem(
+                        "branches",
+                        JSON.stringify(newBranchState)
+                      );
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div>
@@ -106,6 +108,7 @@ function MCL({
             ref={labInputRef}
           ></input>
           <button
+            className={styles.addButton}
             onClick={() => {
               if (
                 labInputRef.current.value &&
@@ -134,40 +137,44 @@ function MCL({
             +
           </button>
           <div>
-            <h3>Available Labs</h3>
-            {labs.map((room) => (
-              <div key={room} className={styles.roomHolder}>
-                <p>{room}</p>
-                <img
-                  src={closeSVG}
-                  className={styles.close}
-                  onClick={() => {
-                    const updatedRooms = labs.filter((r) => r !== room);
-                    localStorage.setItem("labs", JSON.stringify(updatedRooms));
-                    setLabs(updatedRooms);
-                    toast.success(`Removed Lab ${room} Successfully`);
-                    resetData();
-                    const newBranchState = { ...branches };
-                    let keys = Object.keys(newBranchState);
-                    for (let i = 0; i < keys.length; i++) {
-                      let newSubjects = newBranchState[keys[i]].subjects;
-                      for (let j = 0; j < newSubjects.length; j++) {
-                        if (newSubjects[j].requiredClass === room) {
-                          newSubjects[j].requiredClass = "Any";
+            <div className={styles.roomContainer}>
+              {labs.map((room) => (
+                <div key={room} className={styles.roomHolder}>
+                  <p className={styles.roomNumber}>{room}</p>
+                  <img
+                    src={closeSVG}
+                    className={styles.close}
+                    onClick={() => {
+                      const updatedRooms = labs.filter((r) => r !== room);
+                      localStorage.setItem(
+                        "labs",
+                        JSON.stringify(updatedRooms)
+                      );
+                      setLabs(updatedRooms);
+                      toast.success(`Removed Lab ${room} Successfully`);
+                      resetData();
+                      const newBranchState = { ...branches };
+                      let keys = Object.keys(newBranchState);
+                      for (let i = 0; i < keys.length; i++) {
+                        let newSubjects = newBranchState[keys[i]].subjects;
+                        for (let j = 0; j < newSubjects.length; j++) {
+                          if (newSubjects[j].requiredClass === room) {
+                            newSubjects[j].requiredClass = "Any";
+                          }
                         }
+                        newBranchState[keys[i]].subjects = newSubjects;
                       }
-                      newBranchState[keys[i]].subjects = newSubjects;
-                    }
-                    setBranches(newBranchState);
+                      setBranches(newBranchState);
 
-                    localStorage.setItem(
-                      "branches",
-                      JSON.stringify(newBranchState)
-                    );
-                  }}
-                />
-              </div>
-            ))}
+                      localStorage.setItem(
+                        "branches",
+                        JSON.stringify(newBranchState)
+                      );
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

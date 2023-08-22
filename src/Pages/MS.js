@@ -53,9 +53,10 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
   };
   return (
     <div className={styles.container}>
-      <div>
-        <label>Select Branch </label>
+      <div className={styles.selectBranchInputContainer}>
+        <label className={styles.whiteLable}>Select Branch </label>
         <select
+          className={styles.dropDown}
           ref={selectedBranch}
           onChange={handleBranchChange}
           defaultValue="default"
@@ -159,6 +160,7 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
         className={selectedBranchState ? styles.subjectAdder : styles.hidden}
       >
         <div>
+          <h3 className={styles.subjectAdderHeading}>Create A New Subject</h3>
           <input
             placeholder="Subject Name"
             className={styles.primaryInputs}
@@ -170,22 +172,28 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
             className={styles.primaryInputs}
             ref={THPWInputRef}
           ></input>
-
-          <select ref={requiredRoomInputRef} defaultValue="Any">
-            <option value="Any">Any</option>
-            {classRooms.map((x) => (
-              <option value={x} key={x}>
-                {x}
-              </option>
-            ))}
-            {labs.map((x) => (
-              <option value={x} key={x}>
-                {x}
-              </option>
-            ))}
-          </select>
+          <div className={styles.requiredRoomInputContainer}>
+            <label className={styles.whiteLable}>Select Required Room</label>
+            <select
+              className={styles.dropDown}
+              ref={requiredRoomInputRef}
+              defaultValue="Any"
+            >
+              <option value="Any">Any</option>
+              {classRooms.map((x) => (
+                <option value={x} key={x}>
+                  {x}
+                </option>
+              ))}
+              {labs.map((x) => (
+                <option value={x} key={x}>
+                  {x}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div>
+        <div className={styles.isGroupedInputContainer}>
           <input
             type="checkbox"
             ref={isGroupedInputRef}
@@ -193,7 +201,9 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
               setIsGroupedState(isGroupedInputRef.current.checked);
             }}
           ></input>
-          <label>Is Grouped With Other Classes ? </label>
+          <label className={styles.groupedLable}>
+            Is Grouped With Other Classes ?
+          </label>
         </div>
         <div className={isGroupedState ? styles.block : styles.hidden}>
           <select ref={addGroupInputRef} defaultValue="default">
@@ -265,6 +275,7 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
         </div>
         <div>
           <button
+            className={styles.addAsSubject}
             onClick={() => {
               if (!subjectNameInputRef.current.value) {
                 toast.error("Please Enter Subject Name");
@@ -286,6 +297,14 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
                   "Subject With That Name Already Exists In Some Branch , Please Change The Name"
                 );
                 return;
+              }
+              if (!classRooms.includes(requiredRoomInputRef.current.value)) {
+                if (requiredRoomInputRef.current.value !== "Any") {
+                  toast.error(
+                    "You Clicked Add As Subject , But Slected Required Classroom Which Is A Lab"
+                  );
+                  return;
+                }
               }
               let tempSubject = {
                 subjectName: subjectNameInputRef.current.value,
@@ -329,6 +348,7 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
             Add As Subject
           </button>
           <button
+            className={styles.addAsLab}
             onClick={() => {
               if (!subjectNameInputRef.current.value) {
                 toast.error("Please Enter Subject Name");
@@ -353,6 +373,16 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
               if (THPWInputRef.current.value % 2 !== 0) {
                 toast.error(
                   "Our System Only Allows Even Total Hours For The Lab"
+                );
+                return;
+              }
+              if (requiredRoomInputRef.current.value === "Any") {
+                toast.error("Labs Cannot Have The Required Classroom As 'Any'");
+                return;
+              }
+              if (!labs.includes(requiredRoomInputRef.current.value)) {
+                toast.error(
+                  "You Clicked Add As Lab , But Slected Required Classroom Which Is Not A Lab"
                 );
                 return;
               }

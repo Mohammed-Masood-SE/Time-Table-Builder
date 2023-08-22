@@ -460,6 +460,11 @@ function TimeTableService({
       );
 
       if (branches[branchName].subjects[i].isGrouped) {
+        console.log("temp.counter : " + temp.counter);
+        console.log("th : " + branches[branchName].subjects[i].totalHours);
+        console.log(
+          "len : " + branches[branchName].subjects[i].groupedWith.length
+        );
         finalUpdatedUsedSubjects[temp.subjectName] = {
           counter:
             temp.counter -
@@ -679,6 +684,7 @@ function TimeTableService({
   return (
     <div key={branchName} className={styles.container}>
       <h3 className={styles.alignTextCenter}>{branchName}</h3>
+
       {Object.keys(usedSubjectCounter).map((sub) => (
         <button
           className={
@@ -696,13 +702,8 @@ function TimeTableService({
             setSelectedSubject(sub);
           }}
         >
-          {sub} x{" "}
-          {usedSubjectCounter[sub].isGrouped
-            ? (usedSubjectCounter[sub].totalHours -
-                usedSubjectCounter[sub].counter) /
-              2
-            : usedSubjectCounter[sub].totalHours -
-              usedSubjectCounter[sub].counter}
+          {sub} -{" "}
+          {usedSubjectCounter[sub].totalHours - usedSubjectCounter[sub].counter}
         </button>
       ))}
       <table>
