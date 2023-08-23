@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Time-Table-Builder/static/css/main.fb9738ed.css",
-    "main.js": "/Time-Table-Builder/static/js/main.e8c97f3c.js",
+    "main.css": "/Time-Table-Builder/static/css/main.3e95c0dc.css",
+    "main.js": "/Time-Table-Builder/static/js/main.c40a461d.js",
     "static/media/close.svg": "/Time-Table-Builder/static/media/close.4d3a75c9e9fd854564a48e871d51c80c.svg",
     "index.html": "/Time-Table-Builder/index.html",
-    "main.fb9738ed.css.map": "/Time-Table-Builder/static/css/main.fb9738ed.css.map",
-    "main.e8c97f3c.js.map": "/Time-Table-Builder/static/js/main.e8c97f3c.js.map"
+    "main.3e95c0dc.css.map": "/Time-Table-Builder/static/css/main.3e95c0dc.css.map",
+    "main.c40a461d.js.map": "/Time-Table-Builder/static/js/main.c40a461d.js.map"
   },
   "entrypoints": [
-    "static/css/main.fb9738ed.css",
-    "static/js/main.e8c97f3c.js"
+    "static/css/main.3e95c0dc.css",
+    "static/js/main.c40a461d.js"
   ]
 }
