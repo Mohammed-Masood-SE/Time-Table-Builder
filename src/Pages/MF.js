@@ -65,7 +65,7 @@ function MF({
     setFaculties(newFaculties);
     localStorage.setItem("faculties", JSON.stringify(newFaculties));
     toast.success(
-      `Added ${selectedValue} Successfully to ${selectedFacultyState}`
+      `Added ${selectedValue} As An Off Day Successfully to ${selectedFacultyState}`
     );
     resetData();
   };
@@ -188,6 +188,7 @@ function MF({
 
   return (
     <div className={styles.container}>
+      <h3 className={styles.createFacultyHeader}>Create a new faculty</h3>
       <div className={styles.facultyCreateContainer}>
         <input placeholder="Faculty Name" ref={facultyNameInputRef}></input>
         <button
@@ -198,7 +199,8 @@ function MF({
           Create A new Faculty
         </button>
       </div>
-      <div>
+      <h3 className={styles.modifyFacultyHeader}>Modify Existing Faculties</h3>
+      <div className={styles.modifyContainer}>
         <label>Select A Faculty To Modify </label>
         <select
           ref={selectedFaculty}
@@ -227,6 +229,7 @@ function MF({
               <option value="Friday">Friday</option>
             </select>
             <button
+              className={styles.selectButtons}
               onClick={() => {
                 addOffDay();
               }}
@@ -275,6 +278,7 @@ function MF({
               ))}
             </select>
             <button
+              className={styles.selectButtons}
               onClick={() => {
                 addSubject();
               }}

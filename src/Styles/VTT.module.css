@@ -1,5 +1,5 @@
 .container{
-    height: 33rem;
+    min-height: 33rem;
     background-color: rgb(255, 255, 255);
     margin-left: 5rem;
     margin-top: 3rem;

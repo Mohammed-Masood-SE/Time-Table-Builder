@@ -206,7 +206,11 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
           </label>
         </div>
         <div className={isGroupedState ? styles.block : styles.hidden}>
-          <select ref={addGroupInputRef} defaultValue="default">
+          <select
+            className={styles.selectGroups}
+            ref={addGroupInputRef}
+            defaultValue="default"
+          >
             <option value="default" disabled>
               Please Select An Option
             </option>
@@ -221,7 +225,7 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
             })}
           </select>
           <button
-            style={{ marginBottom: "1rem" }}
+            className={styles.selectGroupsButton}
             onClick={() => {
               if (
                 addGroupInputRef.current.value !== "default" &&
@@ -239,7 +243,7 @@ function MS({ branches, setBranches, classRooms, labs, resetData }) {
               }
             }}
           >
-            +
+            Add
           </button>
           <table
             className={

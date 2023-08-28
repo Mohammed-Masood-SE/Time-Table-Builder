@@ -1,11 +1,11 @@
 .container{
-    height: 33rem;
     background-color: rgb(255, 255, 255);
     margin-left: 5rem;
     margin-top: 3rem;
     margin-right: 5rem;
     border-radius: 1%;
     padding: 1rem;
+
 }
 
 .marginTop{

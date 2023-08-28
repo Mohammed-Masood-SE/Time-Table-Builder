@@ -197,7 +197,7 @@ function TimeTableService({
   function groupedClassHandler(cell, requiredClass) {
     //Check If Every Batch Is Free At That Time
     let allBatchesFree = isGroupedBranchesFree(cell);
-    console.log(allBatchesFree);
+
     if (!allBatchesFree) {
       toast.error(
         "Not Every Batch Grouped With This Subject Is Free During This Time"
@@ -460,11 +460,6 @@ function TimeTableService({
       );
 
       if (branches[branchName].subjects[i].isGrouped) {
-        console.log("temp.counter : " + temp.counter);
-        console.log("th : " + branches[branchName].subjects[i].totalHours);
-        console.log(
-          "len : " + branches[branchName].subjects[i].groupedWith.length
-        );
         finalUpdatedUsedSubjects[temp.subjectName] = {
           counter:
             temp.counter -
@@ -511,7 +506,6 @@ function TimeTableService({
       return;
     }
     if (cellData.isGrouped) {
-      console.log(cellData.subjectName);
       // free the classRoom
       let newclassRoomsState = classRoomCollisionManager.freeUpClassRoom(
         classRoomsState,

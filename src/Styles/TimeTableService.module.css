@@ -1,6 +1,7 @@
 .container{
     padding: 1rem;
     margin-bottom: 1rem ;
+    
 }
 
 .alignTextCenter{
@@ -10,8 +11,14 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-style: normal;
+    font-weight:100;
     
 }
+
+
 th, td {
     border: 1px solid #ccc;
     text-align: center;
@@ -29,6 +36,10 @@ td:hover {
 }
 td{
     position: relative;
+    font-family: Montserrat;
+    font-size: 13px;
+    font-style: normal;
+    font-weight:100;
  
 }
 

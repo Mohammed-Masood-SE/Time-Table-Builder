@@ -15,7 +15,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
     return false;
   }
 
-  function getFacultyDertails(periods) {
+  function getFacultyDetails(periods) {
     for (let i = 0; i < periods.length; i++) {
       if (periods[i].facultyName === timeTableFor) {
         return periods[i];
@@ -296,7 +296,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
             <tr>
               <td>Monday</td>
               {finalTimeTable[0].map((periods) => {
-                let data = getFacultyDertails(periods);
+                let data = getFacultyDetails(periods);
                 if (data) {
                   return (
                     <td
@@ -309,6 +309,9 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
                       }
                     >
                       <div>
+                        <div>
+                          <label>{data.branchName}</label>
+                        </div>
                         <div>
                           <label>{data.subjectName}</label>
                         </div>
@@ -326,7 +329,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
             <tr>
               <td>Tuesday</td>
               {finalTimeTable[1].map((periods) => {
-                let data = getFacultyDertails(periods);
+                let data = getFacultyDetails(periods);
                 if (data) {
                   return (
                     <td
@@ -339,6 +342,9 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
                       }
                     >
                       <div>
+                        <div>
+                          <label>{data.branchName}</label>
+                        </div>
                         <div>
                           <label>{data.subjectName}</label>
                         </div>
@@ -356,7 +362,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
             <tr>
               <td>Wednesday</td>
               {finalTimeTable[2].map((periods) => {
-                let data = getFacultyDertails(periods);
+                let data = getFacultyDetails(periods);
                 if (data) {
                   return (
                     <td
@@ -369,6 +375,9 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
                       }
                     >
                       <div>
+                        <div>
+                          <label>{data.branchName}</label>
+                        </div>
                         <div>
                           <label>{data.subjectName}</label>
                         </div>
@@ -386,7 +395,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
             <tr>
               <td>Thrusday</td>
               {finalTimeTable[3].map((periods) => {
-                let data = getFacultyDertails(periods);
+                let data = getFacultyDetails(periods);
                 if (data) {
                   return (
                     <td
@@ -399,6 +408,9 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
                       }
                     >
                       <div>
+                        <div>
+                          <label>{data.branchName}</label>
+                        </div>
                         <div>
                           <label>{data.subjectName}</label>
                         </div>
@@ -416,7 +428,7 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
             <tr>
               <td>Friday</td>
               {finalTimeTable[4].map((periods) => {
-                let data = getFacultyDertails(periods);
+                let data = getFacultyDetails(periods);
                 if (data) {
                   return (
                     <td
@@ -429,6 +441,9 @@ function VTT({ finalTimeTable, branches, faculties, classRooms, labs }) {
                       }
                     >
                       <div>
+                        <div>
+                          <label>{data.branchName}</label>
+                        </div>
                         <div>
                           <label>{data.subjectName}</label>
                         </div>
